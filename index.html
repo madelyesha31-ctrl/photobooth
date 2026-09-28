@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>S.E.E.D — Photo Booth</title>
+  <link href="LOGO2.0.png"rel="icon">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -86,9 +87,33 @@ select{width:100%;border:1px solid var(--ink);background:var(--paper);color:var(
 .result-canvas{max-width:420px;margin:0 auto}
 .result-actions{max-width:420px;margin:12px auto 0}
 footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color:var(--mute);text-align:center}
+.verify-overlay{position:fixed;inset:0;background:var(--paper);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px}
+.verify-card{max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;gap:clamp(10px,1.5vw,14px)}
+.verify-logo img{width:clamp(72px,10vw,90px);height:clamp(72px,10vw,90px);object-fit:contain;margin:0 auto}
+.verify-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(24px,4vw,32px);margin:0;letter-spacing:-.02em}
+.verify-sub{color:var(--mute);font-size:clamp(11px,1.2vw,13px);margin:0}
+.verify-question{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(14px,1.6vw,18px);background:var(--hair);border:1px solid var(--ink);border-radius:14px;padding:clamp(12px,1.8vw,16px);text-align:center;letter-spacing:.02em;line-height:1.5}
+.verify-input{width:100%;border:1px solid var(--ink);background:var(--paper);color:var(--ink);font-family:inherit;font-size:clamp(13px,1.4vw,15px);padding:clamp(10px,1.4vw,12px) clamp(12px,1.6vw,14px);border-radius:14px;text-align:center;outline:none;transition:border-color .15s}
+.verify-input:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(10,10,10,.08)}
+.verify-btn{margin-top:4px}
+.verify-err{font-size:clamp(11px,1.2vw,12px);color:#b91c1c;line-height:1.5}
 </style>
 </head>
 <body>
+<div id="verification-overlay" class="verify-overlay">
+  <div class="verify-card">
+    <div class="verify-logo">
+      <img id="verifyLogo" src="SEED_LOGO.png" alt="S.E.E.D logo" onerror="this.style.display='none'">
+    </div>
+    <h1 class="verify-title">Verification Required</h1>
+    <p class="verify-sub">Enter the correct answer to continue.</p>
+    <div class="verify-question">WHAT IS THE MEANING OF S.E.E.D?</div>
+    <input type="text" id="verifyInput" class="verify-input" placeholder="Type your answer here..." autocomplete="off">
+    <button id="verifyBtn" class="btn verify-btn" type="button">Continue →</button>
+    <div id="verifyErr" class="verify-err" style="display:none">Incorrect answer. Please try again.</div>
+  </div>
+</div>
+
 <div class="wrap">
   <header>
     <div class="brand">
@@ -242,6 +267,30 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
   const errEl=$('err'), settingsLive=$('settingsLive'), filterLive=$('filterLive'), live2=$('live2');
   const videos=[settingsLive,filterLive,live2];
   const cameraSelect=$('cameraSelect'), mirrorToggle=$('mirrorToggle');
+
+  /* ---------- verification ---------- */
+  const verifyOverlay=$('verification-overlay'), verifyInput=$('verifyInput'), verifyBtn=$('verifyBtn'), verifyErr=$('verifyErr');
+  const CORRECT_ANSWER='STUDENT OF EXCELLENCE EMPOWER TO DISCIPLE';
+  function checkVerify(){
+    const val=verifyInput.value.trim().toUpperCase();
+    if(val===CORRECT_ANSWER){
+      verifyOverlay.style.display='none';
+      try{ sessionStorage.setItem('seed_verified','1'); }catch(e){}
+    } else {
+      verifyErr.style.display='block';
+      verifyInput.value='';
+      verifyInput.focus();
+    }
+  }
+  if(!sessionStorage.getItem('seed_verified')){
+    verifyOverlay.style.display='flex';
+    setTimeout(()=>verifyInput.focus(),100);
+  } else {
+    verifyOverlay.style.display='none';
+  }
+  verifyBtn.addEventListener('click',checkVerify);
+  verifyInput.addEventListener('keydown',e=>{ if(e.key==='Enter') checkVerify(); });
+  verifyInput.addEventListener('input',()=>{ verifyErr.style.display='none'; });
   const startBtn=$('startBtn'), countEl=$('countEl'), frameNo=$('frameNo'), shotCounter=$('shotCounter');
   const W=640, H=1400;
 
