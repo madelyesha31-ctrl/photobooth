@@ -93,6 +93,7 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
 .verify-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(24px,4vw,32px);margin:0;letter-spacing:-.02em}
 .verify-sub{color:var(--mute);font-size:clamp(11px,1.2vw,13px);margin:0}
 .verify-question{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(14px,1.6vw,18px);background:var(--hair);border:1px solid var(--ink);border-radius:14px;padding:clamp(12px,1.8vw,16px);text-align:center;letter-spacing:.02em;line-height:1.5}
+.verify-hint{font-size:clamp(11px,1.1vw,12px);color:var(--mute);font-style:italic}
 .verify-input{width:100%;border:1px solid var(--ink);background:var(--paper);color:var(--ink);font-family:inherit;font-size:clamp(13px,1.4vw,15px);padding:clamp(10px,1.4vw,12px) clamp(12px,1.6vw,14px);border-radius:14px;text-align:center;outline:none;transition:border-color .15s}
 .verify-input:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(10,10,10,.08)}
 .verify-btn{margin-top:4px}
@@ -108,6 +109,7 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
     <h1 class="verify-title">Verification Required</h1>
     <p class="verify-sub">Enter the correct answer to continue.</p>
     <div class="verify-question">WHAT IS THE MEANING OF S.E.E.D?</div>
+    <div class="verify-hint">Hint: Capslock only</div>
     <input type="text" id="verifyInput" class="verify-input" placeholder="Type your answer here..." autocomplete="off">
     <button id="verifyBtn" class="btn verify-btn" type="button">Continue →</button>
     <div id="verifyErr" class="verify-err" style="display:none">Incorrect answer. Please try again.</div>
