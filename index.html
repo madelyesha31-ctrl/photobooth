@@ -98,6 +98,16 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
 .verify-input:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(10,10,10,.08)}
 .verify-btn{margin-top:4px}
 .verify-err{font-size:clamp(11px,1.2vw,12px);color:#b91c1c;line-height:1.5}
+.qr-overlay{position:fixed;inset:0;background:var(--paper);z-index:9999;display:none;align-items:center;justify-content:center;padding:24px}
+.qr-overlay.active{display:flex}
+.qr-card{max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;gap:clamp(10px,1.5vw,14px)}
+.qr-logo img{width:clamp(72px,10vw,90px);height:clamp(72px,10vw,90px);object-fit:contain;margin:0 auto}
+.qr-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(24px,4vw,32px);margin:0;letter-spacing:-.02em}
+.qr-sub{color:var(--mute);font-size:clamp(11px,1.2vw,13px);margin:0}
+.qr-canvas{background:#fff;border:1px solid var(--ink);border-radius:14px;padding:clamp(12px,1.8vw,16px);display:inline-flex;align-items:center;justify-content:center;margin:0 auto;aspect-ratio:1/1;width:min(70vw,320px)}
+.qr-canvas img,.qr-canvas canvas{display:block;margin:0 auto;max-width:100%;max-height:100%}
+.qr-hint{font-size:clamp(11px,1.1vw,12px);color:var(--mute);font-style:italic}
+.qr-close{margin-top:4px}
 </style>
 </head>
 <body>
@@ -113,6 +123,19 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
     <input type="text" id="verifyInput" class="verify-input" placeholder="Type your answer here..." autocomplete="off">
     <button id="verifyBtn" class="btn verify-btn" type="button">Continue →</button>
     <div id="verifyErr" class="verify-err" style="display:none">Incorrect answer. Please try again.</div>
+  </div>
+</div>
+
+<div id="qr-overlay" class="qr-overlay">
+  <div class="qr-card">
+    <div class="qr-logo">
+      <img id="qrLogo" src="SEED_LOGO.png" alt="S.E.E.D logo" onerror="this.style.display='none'">
+    </div>
+    <h2 class="qr-title">Scan to Save</h2>
+    <p class="qr-sub">Scan this code to open your strip on this device, then use <b>Download</b> to save it.</p>
+    <div class="qr-canvas" id="qrCanvas"></div>
+    <p class="qr-hint">Keep this screen open until you save your photo.</p>
+    <button class="btn qr-close" id="qrCloseBtn" type="button">Close</button>
   </div>
 </div>
 
@@ -253,6 +276,7 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
     <div class="btnrow result-actions">
       <button class="btn ghost" id="retakeBtn" type="button">Retake</button>
       <button class="btn" id="downloadBtn" type="button">Download strip</button>
+      <button class="btn ghost" id="qrBtn" type="button">Show QR</button>
       <button class="btn ghost" id="emailBtn" type="button">Send Email</button>
       <button class="btn ghost" id="printBtn" type="button">Print</button>
     </div>
@@ -361,6 +385,7 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
     <div class="btnrow result-actions">
       <button class="btn ghost" id="pmRetakeBtn" type="button">Retake</button>
       <button class="btn" id="pmDownloadBtn" type="button">Download strip</button>
+      <button class="btn ghost" id="pmQrBtn" type="button">Show QR</button>
       <button class="btn ghost" id="pmEmailBtn" type="button">Send Email</button>
       <button class="btn ghost" id="pmPrintBtn" type="button">Print</button>
     </div>
@@ -371,6 +396,7 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
 </div>
 
 
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
   <script src="script.js"></script>
 
 </body>

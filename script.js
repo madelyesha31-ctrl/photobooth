@@ -8,6 +8,8 @@
   const videos=[settingsLive,filterLive,live2];
   const cameraSelect=$('cameraSelect'), mirrorToggle=$('mirrorToggle');
   const startBtn=$('startBtn'), countEl=$('countEl'), frameNoEl=$('frameNo'), shotCounter=$('shotCounter');
+  const qrOverlay=$('qr-overlay'), qrCanvas=$('qrCanvas'), qrCloseBtn=$('qrCloseBtn');
+  const qrBtn=$('qrBtn'), pmQrBtn=$('pmQrBtn');
   const W=640, H=1400;
 
   let currentMode='solo';
@@ -405,6 +407,54 @@
   $('fullscreenPmBtn').addEventListener('click',()=>fs('stagePm1'));
   $('fullscreenPmCapBtn').addEventListener('click',()=>fs('stagePm4'));
   window.addEventListener('pagehide',stopStream);
+
+  /* ---------- QR code ---------- */
+  function showQR(){
+    if(typeof qrcode==='undefined'){
+      showErr('QR code library not loaded. Please check your internet connection and try again.');
+      return;
+    }
+    const canvas = isPM() ? $('pmStripCanvas') : $('stripCanvas');
+    if(!canvas){ return; }
+    const sizes=[32,28,24];
+    for(const s of sizes){
+      const thumb=document.createElement('canvas');
+      thumb.width=s; thumb.height=s;
+      const tctx=thumb.getContext('2d');
+      tctx.imageSmoothingEnabled=true;
+      tctx.imageSmoothingQuality='high';
+      tctx.drawImage(canvas,0,0,s,s);
+      let data;
+      try{ data=thumb.toDataURL('image/jpeg',0.05); }catch(e){ continue; }
+      try {
+        const qr=qrcode(0,'L');
+        qr.addData(data);
+        qr.make();
+        const modules=qr.getModuleCount();
+        const cell=10, margin=4;
+        const size=modules*cell+margin*2;
+        const c=document.createElement('canvas');
+        c.width=size; c.height=size;
+        const ctx=c.getContext('2d');
+        ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,size,size);
+        ctx.fillStyle='#000000';
+        for(let y=0;y<modules;y++)for(let x=0;x<modules;x++){
+          if(qr.isDark(y,x)) ctx.fillRect(margin+x*cell,margin+y*cell,cell,cell);
+        }
+        qrCanvas.innerHTML='';
+        const img=c.toDataURL('image/png');
+        qrCanvas.innerHTML='<img src="'+img+'" width="'+size+'" height="'+size+'" style="display:block;max-width:100%;height:auto">';
+        qrOverlay.classList.add('active');
+        return;
+      }catch(e){ continue; }
+    }
+    showErr('Could not generate QR code. The image is too large. Please use Download instead.');
+  }
+  function closeQR(){ qrOverlay.classList.remove('active'); }
+  qrBtn.addEventListener('click',showQR);
+  pmQrBtn.addEventListener('click',showQR);
+  qrCloseBtn.addEventListener('click',closeQR);
+  qrOverlay.addEventListener('click',e=>{ if(e.target===qrOverlay) closeQR(); });
 
   applyMirror();
 })();
