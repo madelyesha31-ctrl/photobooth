@@ -1,4 +1,8 @@
 (function(){
+  if(location.protocol==='file:'){
+    document.body.innerHTML='<div style="padding:24px;font-family:sans-serif"><h1>Open via Server</h1><p>This app must be opened through the local server, not as a local file.</p><p>Start the server with <b>npm start</b> and open <b>http://localhost:3000</b> in your browser.</p></div>';
+    throw new Error('file:// protocol not supported');
+  }
   const $ = id => document.getElementById(id);
   const screens = {
     ...['modes','settings','filter','strip','capture','result'].reduce((o,k)=>(o[k]=$('screen-'+k),o),{}),
@@ -9,15 +13,19 @@
   const videos=[settingsLive,filterLive,live2];
   const cameraSelect=$('cameraSelect'), mirrorToggle=$('mirrorToggle');
   const startBtn=$('startBtn'), countEl=$('countEl'), frameNoEl=$('frameNo'), shotCounter=$('shotCounter');
-  const qrOverlay=$('qr-overlay'), qrCanvas=$('qrCanvas'), qrCloseBtn=$('qrCloseBtn');
-  const qrBtn=$('qrBtn'), pmQrBtn=$('pmQrBtn');
   const openServerSettingsBtn=$('openServerSettingsBtn');
   const serverBaseUrlInput=$('serverBaseUrlInput'), saveServerSettingsBtn=$('saveServerSettingsBtn'), serverSettingsStatus=$('serverSettingsStatus');
   const testServerBtn=$('testServerBtn'), serverTestResult=$('serverTestResult');
+  const driveWebhookUrlInput=$('driveWebhookUrlInput'), saveWebhookBtn=$('saveWebhookBtn'), driveStatus=$('driveStatus');
   const W=640, H=1400;
   const SERVER_BASE_URL_KEY='seed_server_base_url';
+  const GOOGLE_DRIVE_FOLDER_ID='1WnwdpL2p-wZOyG5rKgCh6yapbn-tL4J8';
+  const GOOGLE_TOKEN_KEY='seed_google_token';
+  const GOOGLE_REFRESH_TOKEN_KEY='seed_google_refresh_token';
+  const GOOGLE_CLIENT_ID_KEY='seed_google_client_id';
   let serverBaseUrl='';
   let lastStripUrl=null;
+  let googleAccessToken=null, googleRefreshToken=null, googleUser=null;
 
   let currentMode='solo';
   const pmVideos=[$('pmSettingsLive'),$('pmFilterLive'),$('pmLive2')].filter(Boolean);
@@ -123,7 +131,11 @@
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
   function showErr(msg){ errEl.textContent=msg; errEl.style.display=msg?'block':'none'; }
-  function show(name){ Object.values(screens).forEach(s=>s.classList.remove('active')); screens[name].classList.add('active'); window.scrollTo(0,0); }
+  function show(name){
+    Object.values(screens).forEach(s=>{ if(s) s.classList.remove('active'); });
+    const target=screens[name];
+    if(target){ target.classList.add('active'); window.scrollTo(0,0); }
+  }
 
   /* ---------- camera ---------- */
   function stopStream(){ if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; } curVideos().forEach(v=>v.srcObject=null); }
@@ -442,55 +454,28 @@
       const result=await res.json();
       lastStripUrl=result.url;
       showErr('');
-      showServerQR();
     }catch(e){ showErr('Upload error: '+(e.message||e)+'. Check server URL and network.'); }
-  }
-  function showServerQR(){
-    const baseUrl=getServerBaseUrl();
-    if(!baseUrl){ showErr('Server not configured. Open Server Settings.'); return; }
-    if(!lastStripUrl){ showErr('No strip uploaded yet. Use Save to Server first.'); return; }
-    if(typeof qrcode==='undefined'){ showErr('QR library not loaded'); return; }
-    const url=lastStripUrl;
-    const modules=[33,27,21,17,13];
-    for(const m of modules){
-      try {
-        const qr=qrcode(0,'M');
-        qr.addData(url);
-        qr.make();
-        const count=qr.getModuleCount();
-        const cell=8, margin=4;
-        const size=count*cell+margin*2;
-        const c=document.createElement('canvas');
-        c.width=size; c.height=size;
-        const ctx=c.getContext('2d');
-        ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,size,size);
-        ctx.fillStyle='#000000';
-        for(let y=0;y<count;y++)for(let x=0;x<count;x++){
-          if(qr.isDark(y,x)) ctx.fillRect(margin+x*cell,margin+y*cell,cell,cell);
-        }
-        qrCanvas.innerHTML='';
-        const img=c.toDataURL('image/png');
-        qrCanvas.innerHTML='<img src="'+img+'" width="'+size+'" height="'+size+'" style="display:block;max-width:100%;height:auto">';
-        qrOverlay.classList.add('active');
-        return;
-      }catch(e){ continue; }
-    }
-    showErr('Could not generate QR code. The link is too long.');
   }
 
   /* ---------- Server settings ---------- */
   function openServerSettings(){
-    serverBaseUrlInput.value=getServerBaseUrl();
-    updateServerSettingsStatus();
-    show('server-settings');
+    try{
+      if(serverBaseUrlInput) serverBaseUrlInput.value=getServerBaseUrl();
+      updateServerSettingsStatus();
+      show('server-settings');
+    }catch(e){ showErr('Could not open Server Settings: '+(e.message||e)); }
   }
   function updateServerSettingsStatus(){
-    const url=getServerBaseUrl();
-    if(url){
-      serverSettingsStatus.textContent='Configured · '+url;
-    } else {
-      serverSettingsStatus.textContent='Not configured';
-    }
+    try{
+      const url=getServerBaseUrl();
+      if(serverSettingsStatus){
+        if(url){
+          serverSettingsStatus.textContent='Configured · '+url;
+        } else {
+          serverSettingsStatus.textContent='Not configured';
+        }
+      }
+    }catch(e){}
   }
   openServerSettingsBtn.addEventListener('click',openServerSettings);
   $('serverSettingsBackBtn').addEventListener('click',()=>show('modes'));
@@ -504,6 +489,13 @@
   });
   updateServerSettingsStatus();
 
+  saveWebhookBtn.addEventListener('click',()=>{
+    const url=driveWebhookUrlInput.value.trim();
+    if(!url){ showErr('Please enter a valid Apps Script URL'); return; }
+    localStorage.setItem('seed_drive_webhook_url',url);
+    showErr('Webhook URL saved.');
+    if(driveStatus){ driveStatus.style.display='block'; driveStatus.style.color='#15803d'; driveStatus.textContent='Webhook configured'; }
+  });
   testServerBtn.addEventListener('click', async ()=>{
     const url=serverBaseUrlInput.value.trim() || getServerBaseUrl();
     if(!url){ serverTestResult.style.display='block'; serverTestResult.style.color='#b91c1c'; serverTestResult.textContent='Enter a server URL first'; return; }
@@ -520,57 +512,126 @@
       serverTestResult.textContent='Connection failed: '+(e.message||e)+'. Check URL, network, and server status.';
     }
   });
-  $('saveServerBtn').addEventListener('click',()=>uploadStripToServer('stripCanvas'));
-  $('pmSaveServerBtn').addEventListener('click',()=>uploadStripToServer('pmStripCanvas'));
 
-  /* ---------- QR code ---------- */
-  function showQR(){
-    if(lastStripUrl){ showServerQR(); return; }
-    if(typeof qrcode==='undefined'){
-      showErr('QR code library not loaded. Please check your internet connection and try again.');
-      return;
-    }
-    const canvas = isPM() ? $('pmStripCanvas') : $('stripCanvas');
-    if(!canvas){ return; }
-    const sizes=[32,28,24];
-    for(const s of sizes){
-      const thumb=document.createElement('canvas');
-      thumb.width=s; thumb.height=s;
-      const tctx=thumb.getContext('2d');
-      tctx.imageSmoothingEnabled=true;
-      tctx.imageSmoothingQuality='high';
-      tctx.drawImage(canvas,0,0,s,s);
-      let data;
-      try{ data=thumb.toDataURL('image/jpeg',0.05); }catch(e){ continue; }
-      try {
-        const qr=qrcode(0,'L');
-        qr.addData(data);
-        qr.make();
-        const modules=qr.getModuleCount();
-        const cell=10, margin=4;
-        const size=modules*cell+margin+2;
-        const c=document.createElement('canvas');
-        c.width=size; c.height=size;
-        const ctx=c.getContext('2d');
-        ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,size,size);
-        ctx.fillStyle='#000000';
-        for(let y=0;y<modules;y++)for(let x=0;x<modules;x++){
-          if(qr.isDark(y,x)) ctx.fillRect(margin+x*cell,margin+y*cell,cell,cell);
-        }
-        qrCanvas.innerHTML='';
-        const img=c.toDataURL('image/png');
-        qrCanvas.innerHTML='<img src="'+img+'" width="'+size+'" height="'+size+'" style="display:block;max-width:100%;height:auto">';
-        qrOverlay.classList.add('active');
-        return;
-      }catch(e){ continue; }
-    }
-    showErr('Could not generate QR code. The image is too large. Please use Download instead.');
+  /* ---------- Google Drive ---------- */
+  function getGoogleClientId(){
+    try{ return localStorage.getItem(GOOGLE_CLIENT_ID_KEY)||''; }catch(e){ return ''; }
   }
-  function closeQR(){ qrOverlay.classList.remove('active'); }
-  qrBtn.addEventListener('click',showQR);
-  pmQrBtn.addEventListener('click',showQR);
-  qrCloseBtn.addEventListener('click',closeQR);
-  qrOverlay.addEventListener('click',e=>{ if(e.target===qrOverlay) closeQR(); });
+  function setGoogleClientId(id){
+    try{ localStorage.setItem(GOOGLE_CLIENT_ID_KEY,id); }catch(e){}
+  }
+  async function doGoogleSignin(){
+    console.log('doGoogleSignin clicked');
+    const clientId=getGoogleClientId();
+    console.log('clientId:', clientId ? 'set' : 'missing');
+    if(!clientId){ showErr('Enter your Google Client ID in Server Settings first.'); return; }
+    const redirectUri=location.origin+location.pathname;
+    const scope='https://www.googleapis.com/auth/drive.file';
+    const state='seed_photo_booth_'+Date.now();
+    const authUrl='https://accounts.google.com/o/oauth2/v2/auth?client_id='+encodeURIComponent(clientId)+'&redirect_uri='+encodeURIComponent(redirectUri)+'&response_type=code&scope='+encodeURIComponent(scope)+'&state='+encodeURIComponent(state)+'&access_type=offline&prompt=consent';
+    const width=500, height=600;
+    const left=(window.screen.width/2)-(width/2);
+    const top=(window.screen.height/2)-(height/2);
+    console.log('opening popup');
+    const popup=window.open(authUrl,'google_signin','width='+width+',height='+height+',left='+left+',top='+top);
+    if(!popup){ showErr('Popup blocked. Please allow popups for this site and try again.'); return; }
+    console.log('popup opened');
+    const pollTimer=setInterval(async ()=>{
+      if(!popup || popup.closed){
+        clearInterval(pollTimer);
+        return;
+      }
+      try{
+        const current=popup.location.href;
+        if(current && current.startsWith(redirectUri)){
+          const url=new URL(current);
+          const code=url.searchParams.get('code');
+          const returnedState=url.searchParams.get('state');
+          if(code && returnedState===state){
+            popup.close();
+            clearInterval(pollTimer);
+            const tokenRes=await fetch('https://oauth2.googleapis.com/token',{
+              method:'POST',
+              headers:{'Content-Type':'application/x-www-form-urlencoded'},
+              body:'client_id='+encodeURIComponent(clientId)+'&code='+encodeURIComponent(code)+'&redirect_uri='+encodeURIComponent(redirectUri)+'&grant_type=authorization_code'
+            });
+            const tokenData=await tokenRes.json();
+            if(tokenData.access_token){
+              googleAccessToken=tokenData.access_token;
+              setGoogleToken(tokenData.access_token);
+              if(tokenData.refresh_token){ setGoogleRefreshToken(tokenData.refresh_token); }
+              try{
+                const userRes=await fetch('https://www.googleapis.com/oauth2/v2/userinfo',{headers:{Authorization:'Bearer '+googleAccessToken}});
+                const userData=await userRes.json();
+                if(userData.email){ googleUser=userData; }
+              }catch(e){}
+              showErr('');
+              if(driveStatus){
+                driveStatus.style.display='block';
+                driveStatus.style.color='#15803d';
+                driveStatus.textContent='Connected as '+(googleUser?.email || 'Google account');
+              }
+            } else {
+              showErr('Sign-in failed: '+(tokenData.error||'Unknown error'));
+            }
+          }
+        }
+      }catch(e){}
+    },500);
+  }
+  function getGoogleToken(){
+    try{ return localStorage.getItem(GOOGLE_TOKEN_KEY)||''; }catch(e){ return ''; }
+  }
+  function setGoogleToken(token){
+    try{ localStorage.setItem(GOOGLE_TOKEN_KEY,token); }catch(e){}
+  }
+  function getGoogleRefreshToken(){
+    try{ return localStorage.getItem(GOOGLE_REFRESH_TOKEN_KEY)||''; }catch(e){ return ''; }
+  }
+  function setGoogleRefreshToken(token){
+    try{ localStorage.setItem(GOOGLE_REFRESH_TOKEN_KEY,token); }catch(e){}
+  }
+  async function refreshGoogleAccessToken(){
+    const refreshToken=getGoogleRefreshToken();
+    if(!refreshToken){ return false; }
+    const clientId=getGoogleClientId();
+    if(!clientId){ return false; }
+    try{
+      const res=await fetch('https://oauth2.googleapis.com/token',{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:'client_id='+encodeURIComponent(clientId)+'&refresh_token='+encodeURIComponent(refreshToken)+'&grant_type=refresh_token'
+      });
+      const data=await res.json();
+      if(data.access_token){
+        googleAccessToken=data.access_token;
+        setGoogleToken(data.access_token);
+        if(data.refresh_token){ setGoogleRefreshToken(data.refresh_token); }
+        return true;
+      }
+      return false;
+    }catch(e){ return false; }
+  }
+  async function uploadStripToDrive(canvasId){
+    const webhookUrl=localStorage.getItem('seed_drive_webhook_url')||'';
+    if(!webhookUrl){ showErr('Apps Script webhook URL not set. Open Server Settings and save it.'); return; }
+    const canvas=$(canvasId);
+    if(!canvas){ showErr('No strip found'); return; }
+    try{
+      const data=exportData(canvasId);
+      if(!data){ showErr('Could not export the strip'); return; }
+      const res=await fetch(webhookUrl,{
+        method:'POST',
+        body:data,
+        headers:{'Content-Type':'text/plain'}
+      });
+      if(!res.ok){ const t=await res.text(); showErr('Upload failed: '+res.status+' '+t); return; }
+      const result=await res.json();
+      if(result.error){ showErr('Drive error: '+result.error); return; }
+      lastStripUrl='https://drive.google.com/drive/folders/1WnwdpL2p-wZOyG5rKgCh6yapbn-tL4J8';
+      showErr('');
+    }catch(e){ showErr('Drive upload error: '+(e.message||e)); }
+  }
 
   applyMirror();
 })();
