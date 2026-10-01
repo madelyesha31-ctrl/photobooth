@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,8 +7,10 @@
 <link rel="icon" href="LOGO2.0.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+  <script src="script.js"></script>
+  <style>
 :root{--ink:#0a0a0a;--paper:#fff;--mute:#6b6b68;--hair:#e5e5e5}
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -132,9 +134,9 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
       <img id="qrLogo" src="SEED_LOGO.png" alt="S.E.E.D logo" onerror="this.style.display='none'">
     </div>
     <h2 class="qr-title">Scan to Save</h2>
-    <p class="qr-sub">Scan this code to open your strip on this device, then use <b>Download</b> to save it.</p>
+    <p class="qr-sub">Scan this code to open your strip and save it.</p>
     <div class="qr-canvas" id="qrCanvas"></div>
-    <p class="qr-hint">Keep this screen open until you save your photo.</p>
+    <p class="qr-hint">Make sure your phone is on the same Wi-Fi network.</p>
     <button class="btn qr-close" id="qrCloseBtn" type="button">Close</button>
   </div>
 </div>
@@ -144,8 +146,33 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
     <div class="brand">
       <img class="logo" id="headerLogo" src="SEED_LOGO.png" alt="S.E.E.D logo" onerror="this.style.display='none'">
       <div class="brandtext"><b>Regeneration S.E.E.D</b><span>Photo Booth</span></div>
+      <button class="btn" id="openServerSettingsBtn" type="button" style="margin-left:auto">Server Settings</button>
     </div>
   </header>
+
+  <!-- SETTINGS -->
+  <section id="screen-server-settings" class="screen">
+    <div class="top">
+      <button class="btn ghost" id="serverSettingsBackBtn" type="button">← Back</button>
+      <div><div class="step">Setup</div><div class="title">Local Server Settings</div></div>
+      <div class="spacer"></div>
+    </div>
+    <div class="two">
+      <div class="panel side">
+        <div><div class="lbl">Local Server</div><div class="title big">Configuration</div></div>
+        <div><div class="lbl left">Server Base URL</div><input type="text" id="serverBaseUrlInput" class="verify-input" placeholder="http://192.168.1.50:3000" autocomplete="off"></div>
+        <p style="color:var(--mute);font-size:clamp(10px,1.2vw,11px);margin:0">Run the included server.js with Node.js and enter its address here. Make sure your phone and PC are on the same network.</p>
+        <div class="foot"><button class="btn" id="saveServerSettingsBtn" type="button">Save Settings</button></div>
+      </div>
+      <div class="panel">
+        <div class="bar"><span>Status</span></div>
+        <div class="side">
+          <div class="lbl">Current Configuration</div>
+          <div id="serverSettingsStatus" style="font-size:clamp(11px,1.2vw,12px);color:var(--mute)">Not configured</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- MODES -->
   <section id="screen-modes" class="screen active">
@@ -276,10 +303,12 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
     <div class="btnrow result-actions">
       <button class="btn ghost" id="retakeBtn" type="button">Retake</button>
       <button class="btn" id="downloadBtn" type="button">Download strip</button>
+      <button class="btn ghost" id="saveServerBtn" type="button">Save to Server</button>
       <button class="btn ghost" id="qrBtn" type="button">Show QR</button>
       <button class="btn ghost" id="emailBtn" type="button">Send Email</button>
       <button class="btn ghost" id="printBtn" type="button">Print</button>
     </div>
+    <div style="text-align:center;margin-top:8px;font-size:clamp(10px,1.1vw,11px);color:var(--mute);display:none" id="serverUserInfo"></div>
   </section>
 
   <!-- POSE MATCH STEP 1 -->
@@ -385,10 +414,12 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
     <div class="btnrow result-actions">
       <button class="btn ghost" id="pmRetakeBtn" type="button">Retake</button>
       <button class="btn" id="pmDownloadBtn" type="button">Download strip</button>
+      <button class="btn ghost" id="pmSaveServerBtn" type="button">Save to Server</button>
       <button class="btn ghost" id="pmQrBtn" type="button">Show QR</button>
       <button class="btn ghost" id="pmEmailBtn" type="button">Send Email</button>
       <button class="btn ghost" id="pmPrintBtn" type="button">Print</button>
     </div>
+    <div style="text-align:center;margin-top:8px;font-size:clamp(10px,1.1vw,11px);color:var(--mute);display:none" id="pmServerUserInfo"></div>
   </section>
 
   <div id="err"></div>

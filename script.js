@@ -2,7 +2,8 @@
   const $ = id => document.getElementById(id);
   const screens = {
     ...['modes','settings','filter','strip','capture','result'].reduce((o,k)=>(o[k]=$('screen-'+k),o),{}),
-    ...['pm-settings','pm-filter','pm-strip','pm-capture','pm-result'].reduce((o,k)=>(o[k]=$('screen-'+k),o),{})
+    ...['pm-settings','pm-filter','pm-strip','pm-capture','pm-result'].reduce((o,k)=>(o[k]=$('screen-'+k),o),{}),
+    'server-settings': $('screen-server-settings')
   };
   const errEl=$('err'), settingsLive=$('settingsLive'), filterLive=$('filterLive'), live2=$('live2');
   const videos=[settingsLive,filterLive,live2];
@@ -10,7 +11,12 @@
   const startBtn=$('startBtn'), countEl=$('countEl'), frameNoEl=$('frameNo'), shotCounter=$('shotCounter');
   const qrOverlay=$('qr-overlay'), qrCanvas=$('qrCanvas'), qrCloseBtn=$('qrCloseBtn');
   const qrBtn=$('qrBtn'), pmQrBtn=$('pmQrBtn');
+  const openServerSettingsBtn=$('openServerSettingsBtn');
+  const serverBaseUrlInput=$('serverBaseUrlInput'), saveServerSettingsBtn=$('saveServerSettingsBtn'), serverSettingsStatus=$('serverSettingsStatus');
   const W=640, H=1400;
+  const SERVER_BASE_URL_KEY='seed_server_base_url';
+  let serverBaseUrl='';
+  let lastStripUrl=null;
 
   let currentMode='solo';
   const pmVideos=[$('pmSettingsLive'),$('pmFilterLive'),$('pmLive2')].filter(Boolean);
@@ -408,8 +414,100 @@
   $('fullscreenPmCapBtn').addEventListener('click',()=>fs('stagePm4'));
   window.addEventListener('pagehide',stopStream);
 
+  function getServerBaseUrl(){
+    try{ return localStorage.getItem(SERVER_BASE_URL_KEY)||''; }catch(e){ return ''; }
+  }
+  function setServerBaseUrl(url){
+    try{ localStorage.setItem(SERVER_BASE_URL_KEY,url); }catch(e){}
+  }
+  /* ---------- Local Server ---------- */
+  async function uploadStripToServer(canvasId){
+    const baseUrl=getServerBaseUrl();
+    if(!baseUrl){ showErr('Server not configured. Open Server Settings and enter the server URL.'); return; }
+    const canvas=$(canvasId);
+    if(!canvas){ showErr('No strip found'); return; }
+    try{
+      const data=exportData(canvasId);
+      if(!data){ showErr('Could not export the strip'); return; }
+      const blob=await (await fetch(data)).blob();
+      const form=new FormData();
+      form.append('file',blob,'strip.png');
+      const res=await fetch(baseUrl+'/api/upload-strip',{
+        method:'POST',
+        body:form
+      });
+      if(!res.ok){ const t=await res.text(); showErr('Upload failed: '+res.status+' '+t); return; }
+      const result=await res.json();
+      lastStripUrl=result.url;
+      showErr('');
+      showServerQR();
+    }catch(e){ showErr('Upload error: '+(e.message||e)); }
+  }
+  function showServerQR(){
+    const baseUrl=getServerBaseUrl();
+    if(!baseUrl){ showErr('Server not configured. Open Server Settings.'); return; }
+    if(!lastStripUrl){ showErr('No strip uploaded yet. Use Save to Server first.'); return; }
+    if(typeof qrcode==='undefined'){ showErr('QR library not loaded'); return; }
+    const url=lastStripUrl;
+    const modules=[33,27,21,17,13];
+    for(const m of modules){
+      try {
+        const qr=qrcode(0,'M');
+        qr.addData(url);
+        qr.make();
+        const count=qr.getModuleCount();
+        const cell=8, margin=4;
+        const size=count*cell+margin*2;
+        const c=document.createElement('canvas');
+        c.width=size; c.height=size;
+        const ctx=c.getContext('2d');
+        ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,size,size);
+        ctx.fillStyle='#000000';
+        for(let y=0;y<count;y++)for(let x=0;x<count;x++){
+          if(qr.isDark(y,x)) ctx.fillRect(margin+x*cell,margin+y*cell,cell,cell);
+        }
+        qrCanvas.innerHTML='';
+        const img=c.toDataURL('image/png');
+        qrCanvas.innerHTML='<img src="'+img+'" width="'+size+'" height="'+size+'" style="display:block;max-width:100%;height:auto">';
+        qrOverlay.classList.add('active');
+        return;
+      }catch(e){ continue; }
+    }
+    showErr('Could not generate QR code. The link is too long.');
+  }
+
+  /* ---------- Server settings ---------- */
+  function openServerSettings(){
+    serverBaseUrlInput.value=getServerBaseUrl();
+    updateServerSettingsStatus();
+    show('server-settings');
+  }
+  function updateServerSettingsStatus(){
+    const url=getServerBaseUrl();
+    if(url){
+      serverSettingsStatus.textContent='Configured · '+url;
+    } else {
+      serverSettingsStatus.textContent='Not configured';
+    }
+  }
+  openServerSettingsBtn.addEventListener('click',openServerSettings);
+  $('serverSettingsBackBtn').addEventListener('click',()=>show('modes'));
+  saveServerSettingsBtn.addEventListener('click',()=>{
+    const url=serverBaseUrlInput.value.trim();
+    if(!url){ showErr('Please enter a valid server URL'); return; }
+    setServerBaseUrl(url);
+    updateServerSettingsStatus();
+    showErr('');
+    show('modes');
+  });
+  updateServerSettingsStatus();
+
+  $('saveServerBtn').addEventListener('click',()=>uploadStripToServer('stripCanvas'));
+  $('pmSaveServerBtn').addEventListener('click',()=>uploadStripToServer('pmStripCanvas'));
+
   /* ---------- QR code ---------- */
   function showQR(){
+    if(lastStripUrl){ showServerQR(); return; }
     if(typeof qrcode==='undefined'){
       showErr('QR code library not loaded. Please check your internet connection and try again.');
       return;
@@ -432,7 +530,7 @@
         qr.make();
         const modules=qr.getModuleCount();
         const cell=10, margin=4;
-        const size=modules*cell+margin*2;
+        const size=modules*cell+margin+2;
         const c=document.createElement('canvas');
         c.width=size; c.height=size;
         const ctx=c.getContext('2d');
