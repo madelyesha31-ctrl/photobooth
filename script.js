@@ -13,6 +13,7 @@
   const qrBtn=$('qrBtn'), pmQrBtn=$('pmQrBtn');
   const openServerSettingsBtn=$('openServerSettingsBtn');
   const serverBaseUrlInput=$('serverBaseUrlInput'), saveServerSettingsBtn=$('saveServerSettingsBtn'), serverSettingsStatus=$('serverSettingsStatus');
+  const testServerBtn=$('testServerBtn'), serverTestResult=$('serverTestResult');
   const W=640, H=1400;
   const SERVER_BASE_URL_KEY='seed_server_base_url';
   let serverBaseUrl='';
@@ -432,16 +433,17 @@
       const blob=await (await fetch(data)).blob();
       const form=new FormData();
       form.append('file',blob,'strip.png');
-      const res=await fetch(baseUrl+'/api/upload-strip',{
+      const uploadUrl=baseUrl+'/api/upload-strip';
+      const res=await fetch(uploadUrl,{
         method:'POST',
         body:form
       });
-      if(!res.ok){ const t=await res.text(); showErr('Upload failed: '+res.status+' '+t); return; }
+      if(!res.ok){ const t=await res.text(); showErr('Upload failed: '+res.status+' '+t+' at '+uploadUrl); return; }
       const result=await res.json();
       lastStripUrl=result.url;
       showErr('');
       showServerQR();
-    }catch(e){ showErr('Upload error: '+(e.message||e)); }
+    }catch(e){ showErr('Upload error: '+(e.message||e)+'. Check server URL and network.'); }
   }
   function showServerQR(){
     const baseUrl=getServerBaseUrl();
@@ -502,6 +504,22 @@
   });
   updateServerSettingsStatus();
 
+  testServerBtn.addEventListener('click', async ()=>{
+    const url=serverBaseUrlInput.value.trim() || getServerBaseUrl();
+    if(!url){ serverTestResult.style.display='block'; serverTestResult.style.color='#b91c1c'; serverTestResult.textContent='Enter a server URL first'; return; }
+    serverTestResult.style.display='block'; serverTestResult.style.color='var(--mute)'; serverTestResult.textContent='Testing '+url+' ...';
+    try{
+      const controller=new AbortController();
+      const timeout=setTimeout(()=>controller.abort(),5000);
+      const res=await fetch(url,{method:'GET',mode:'cors',signal:controller.signal});
+      clearTimeout(timeout);
+      serverTestResult.style.color='#15803d';
+      serverTestResult.textContent='Connected successfully ('+res.status+'). You can save this URL.';
+    }catch(e){
+      serverTestResult.style.color='#b91c1c';
+      serverTestResult.textContent='Connection failed: '+(e.message||e)+'. Check URL, network, and server status.';
+    }
+  });
   $('saveServerBtn').addEventListener('click',()=>uploadStripToServer('stripCanvas'));
   $('pmSaveServerBtn').addEventListener('click',()=>uploadStripToServer('pmStripCanvas'));
 

@@ -134,9 +134,9 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
       <img id="qrLogo" src="SEED_LOGO.png" alt="S.E.E.D logo" onerror="this.style.display='none'">
     </div>
     <h2 class="qr-title">Scan to Save</h2>
-    <p class="qr-sub">Scan this code to open your strip and save it.</p>
+    <p class="qr-sub">Scan this code to open your strip image directly.</p>
     <div class="qr-canvas" id="qrCanvas"></div>
-    <p class="qr-hint">Make sure your phone is on the same Wi-Fi network.</p>
+    <p class="qr-hint">After scanning, your browser will open the image. Use the browser menu to download or share it.</p>
     <button class="btn qr-close" id="qrCloseBtn" type="button">Close</button>
   </div>
 </div>
@@ -162,7 +162,8 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
         <div><div class="lbl">Local Server</div><div class="title big">Configuration</div></div>
         <div><div class="lbl left">Server Base URL</div><input type="text" id="serverBaseUrlInput" class="verify-input" placeholder="http://192.168.1.50:3000" autocomplete="off"></div>
         <p style="color:var(--mute);font-size:clamp(10px,1.2vw,11px);margin:0">Run the included server.js with Node.js and enter its address here. Make sure your phone and PC are on the same network.</p>
-        <div class="foot"><button class="btn" id="saveServerSettingsBtn" type="button">Save Settings</button></div>
+        <div class="foot"><button class="btn" id="testServerBtn" type="button">Test Connection</button><button class="btn" id="saveServerSettingsBtn" type="button" style="margin-left:8px">Save Settings</button></div>
+        <div id="serverTestResult" style="font-size:clamp(10px,1.1vw,11px);color:var(--mute);margin-top:8px;display:none"></div>
       </div>
       <div class="panel">
         <div class="bar"><span>Status</span></div>
