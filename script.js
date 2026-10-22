@@ -13,13 +13,9 @@
   const videos=[settingsLive,filterLive,live2];
   const cameraSelect=$('cameraSelect'), mirrorToggle=$('mirrorToggle');
   const startBtn=$('startBtn'), countEl=$('countEl'), frameNoEl=$('frameNo'), shotCounter=$('shotCounter');
-  const openServerSettingsBtn=$('openServerSettingsBtn');
-  const serverBaseUrlInput=$('serverBaseUrlInput'), saveServerSettingsBtn=$('saveServerSettingsBtn'), serverSettingsStatus=$('serverSettingsStatus');
-  const testServerBtn=$('testServerBtn'), serverTestResult=$('serverTestResult');
   const driveWebhookUrlInput=$('driveWebhookUrlInput'), saveWebhookBtn=$('saveWebhookBtn'), driveStatus=$('driveStatus');
-  const W=640, H=1400;
-  const SERVER_BASE_URL_KEY='seed_server_base_url';
-  const GOOGLE_DRIVE_FOLDER_ID='1WnwdpL2p-wZOyG5rKgCh6yapbn-tL4J8';
+const W=640, H=1400;
+  
   const GOOGLE_TOKEN_KEY='seed_google_token';
   const GOOGLE_REFRESH_TOKEN_KEY='seed_google_refresh_token';
   const GOOGLE_CLIENT_ID_KEY='seed_google_client_id';
@@ -427,92 +423,8 @@
   $('fullscreenPmCapBtn').addEventListener('click',()=>fs('stagePm4'));
   window.addEventListener('pagehide',stopStream);
 
-  function getServerBaseUrl(){
-    try{ return localStorage.getItem(SERVER_BASE_URL_KEY)||''; }catch(e){ return ''; }
+  catch(e){}
   }
-  function setServerBaseUrl(url){
-    try{ localStorage.setItem(SERVER_BASE_URL_KEY,url); }catch(e){}
-  }
-  /* ---------- Local Server ---------- */
-  async function uploadStripToServer(canvasId){
-    const baseUrl=getServerBaseUrl();
-    if(!baseUrl){ showErr('Server not configured. Open Server Settings and enter the server URL.'); return; }
-    const canvas=$(canvasId);
-    if(!canvas){ showErr('No strip found'); return; }
-    try{
-      const data=exportData(canvasId);
-      if(!data){ showErr('Could not export the strip'); return; }
-      const blob=await (await fetch(data)).blob();
-      const form=new FormData();
-      form.append('file',blob,'strip.png');
-      const uploadUrl=baseUrl+'/api/upload-strip';
-      const res=await fetch(uploadUrl,{
-        method:'POST',
-        body:form
-      });
-      if(!res.ok){ const t=await res.text(); showErr('Upload failed: '+res.status+' '+t+' at '+uploadUrl); return; }
-      const result=await res.json();
-      lastStripUrl=result.url;
-      showErr('');
-    }catch(e){ showErr('Upload error: '+(e.message||e)+'. Check server URL and network.'); }
-  }
-
-  /* ---------- Server settings ---------- */
-  function openServerSettings(){
-    try{
-      if(serverBaseUrlInput) serverBaseUrlInput.value=getServerBaseUrl();
-      updateServerSettingsStatus();
-      show('server-settings');
-    }catch(e){ showErr('Could not open Server Settings: '+(e.message||e)); }
-  }
-  function updateServerSettingsStatus(){
-    try{
-      const url=getServerBaseUrl();
-      if(serverSettingsStatus){
-        if(url){
-          serverSettingsStatus.textContent='Configured · '+url;
-        } else {
-          serverSettingsStatus.textContent='Not configured';
-        }
-      }
-    }catch(e){}
-  }
-  openServerSettingsBtn.addEventListener('click',openServerSettings);
-  $('serverSettingsBackBtn').addEventListener('click',()=>show('modes'));
-  saveServerSettingsBtn.addEventListener('click',()=>{
-    const url=serverBaseUrlInput.value.trim();
-    if(!url){ showErr('Please enter a valid server URL'); return; }
-    setServerBaseUrl(url);
-    updateServerSettingsStatus();
-    showErr('');
-    show('modes');
-  });
-  updateServerSettingsStatus();
-
-  saveWebhookBtn.addEventListener('click',()=>{
-    const url=driveWebhookUrlInput.value.trim();
-    if(!url){ showErr('Please enter a valid Apps Script URL'); return; }
-    localStorage.setItem('seed_drive_webhook_url',url);
-    showErr('Webhook URL saved.');
-    if(driveStatus){ driveStatus.style.display='block'; driveStatus.style.color='#15803d'; driveStatus.textContent='Webhook configured'; }
-  });
-  testServerBtn.addEventListener('click', async ()=>{
-    const url=serverBaseUrlInput.value.trim() || getServerBaseUrl();
-    if(!url){ serverTestResult.style.display='block'; serverTestResult.style.color='#b91c1c'; serverTestResult.textContent='Enter a server URL first'; return; }
-    serverTestResult.style.display='block'; serverTestResult.style.color='var(--mute)'; serverTestResult.textContent='Testing '+url+' ...';
-    try{
-      const controller=new AbortController();
-      const timeout=setTimeout(()=>controller.abort(),5000);
-      const res=await fetch(url,{method:'GET',mode:'cors',signal:controller.signal});
-      clearTimeout(timeout);
-      serverTestResult.style.color='#15803d';
-      serverTestResult.textContent='Connected successfully ('+res.status+'). You can save this URL.';
-    }catch(e){
-      serverTestResult.style.color='#b91c1c';
-      serverTestResult.textContent='Connection failed: '+(e.message||e)+'. Check URL, network, and server status.';
-    }
-  });
-
   /* ---------- Google Drive ---------- */
   function getGoogleClientId(){
     try{ return localStorage.getItem(GOOGLE_CLIENT_ID_KEY)||''; }catch(e){ return ''; }
@@ -635,3 +547,10 @@
 
   applyMirror();
 })();
+
+
+
+
+
+
+

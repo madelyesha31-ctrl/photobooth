@@ -14,12 +14,12 @@
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:'IBM Plex Mono',ui-monospace,monospace;-webkit-tap-highlight-color:transparent}
-.wrap{min-height:100%;max-width:1200px;margin:0 auto;padding:clamp(16px,2.5vw,24px) clamp(16px,2.5vw,24px) clamp(24px,3vw,32px)}
-header{display:flex;align-items:center;justify-content:space-between;padding:clamp(6px,1vw,8px) 2px clamp(16px,2.5vw,22px)}
+.wrap{min-height:100%;max-width:1100px;margin:0 auto;padding:clamp(20px,3vw,28px) clamp(20px,3vw,28px) clamp(28px,4vw,36px)}
+header{display:flex;align-items:center;justify-content:space-between;padding:clamp(8px,1.2vw,10px) 2px clamp(18px,2.5vw,24px)}
 .brand{display:flex;align-items:center;gap:clamp(8px,1.5vw,12px)}
-.logo{width:clamp(64px,9vw,90px);height:clamp(64px,9vw,90px);object-fit:contain}
-.brandtext b{font-family:'Space Grotesk',sans-serif;font-size:clamp(13px,1.8vw,15px);display:block}
-.brandtext span{font-size:clamp(10px,1.2vw,10.5px);color:var(--mute)}
+.logo{width:clamp(56px,8vw,80px);height:clamp(56px,8vw,80px);object-fit:contain}
+.brandtext b{font-family:'Space Grotesk',sans-serif;font-size:clamp(12px,1.6vw,14px);display:block}
+.brandtext span{font-size:clamp(9px,1.1vw,10px);color:var(--mute)}
 h1,h2,.title{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-.02em}
 .hero{text-align:center;padding:clamp(28px,5vw,40px) 0 clamp(24px,4vw,32px)}
 .hero h1{font-size:clamp(34px,7.5vw,52px);margin:0 0 10px;line-height:1.05}
@@ -41,13 +41,13 @@ h1,h2,.title{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spaci
 .btn.accent{background:#f87171;color:#fff;border-color:#f87171}
 .screen{display:none}
 .screen.active{display:block}
-.top{display:flex;align-items:center;justify-content:space-between;padding:clamp(6px,1vw,8px) 2px clamp(14px,2vw,18px);flex-wrap:wrap;gap:8px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:clamp(8px,1.2vw,10px) 2px clamp(16px,2.5vw,20px);flex-wrap:wrap;gap:8px}
 .top .step{font-size:clamp(9px,1vw,10px);color:var(--mute);text-transform:uppercase;letter-spacing:.1em;text-align:center}
 .top .title{font-size:clamp(14px,1.6vw,16px);text-align:center}
-.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(12px,2vw,24px);align-items:start}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(20px,3vw,32px);align-items:center}
 .bar{display:flex;align-items:center;justify-content:space-between;padding:clamp(8px,1.2vw,10px) clamp(10px,1.5vw,12px);border-bottom:1px solid var(--hair);font-size:clamp(10px,1.1vw,11px)}
 .pill{font-size:clamp(9px,1vw,10px);padding:clamp(3px,.5vw,4px) clamp(6px,1vw,10px);border-radius:999px;border:1px solid var(--ink);text-transform:uppercase;letter-spacing:.08em}
-.side{padding:clamp(16px,2.5vw,22px) clamp(14px,2vw,18px);display:flex;flex-direction:column;gap:clamp(10px,1.5vw,14px)}
+.side{padding:clamp(16px,2.5vw,22px) clamp(14px,2vw,18px);display:flex;flex-direction:column;gap:clamp(12px,1.8vw,16px)}
 .side .lbl{font-size:clamp(9px,1vw,10px);color:var(--mute);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:4px}
 .side .lbl.left{text-align:left}
 .side .big{font-size:clamp(16px,2.2vw,20px);text-align:center}
@@ -78,16 +78,31 @@ select{width:100%;border:1px solid var(--ink);background:var(--paper);color:var(
 #startBtn,#pmStartBtn{position:absolute;bottom:clamp(14px,2vw,18px);left:50%;transform:translateX(-50%);background:#facc15;color:var(--ink);border:none;padding:clamp(10px,1.5vw,12px) clamp(20px,3vw,28px);border-radius:999px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(12px,1.4vw,14px);cursor:pointer}
 #startBtn:disabled,#pmStartBtn:disabled{opacity:.5}
 #err{font-size:clamp(11px,1.2vw,12px);color:#b91c1c;margin-top:12px;display:none;line-height:1.6}
-.meta{display:flex;justify-content:space-between;padding:clamp(6px,1vw,8px) 2px clamp(14px,2vw,18px);font-size:clamp(10px,1.1vw,11px);color:var(--mute);border-bottom:1px solid var(--hair);margin-bottom:clamp(14px,2vw,18px)}
-.btnrow{display:flex;gap:clamp(8px,1.2vw,10px);margin-top:12px}
-.btnrow .btn{flex:1}
-.spacer{width:clamp(50px,7vw,70px)}
-.spacer.right{margin-left:auto;text-align:right;font-size:clamp(10px,1.1vw,11px);color:var(--mute)}
-.result-title{font-size:clamp(28px,6vw,40px);margin:0 0 clamp(6px,1vw,8px)}
-.result-sub{margin:0 0 clamp(14px,2.5vw,20px);color:var(--mute);font-size:clamp(11px,1.2vw,13px)}
-.result-canvas{max-width:420px;margin:0 auto}
-.result-actions{max-width:420px;margin:12px auto 0}
-footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color:var(--mute);text-align:center}
+.meta{display:flex;justify-content:space-between;padding:clamp(6px,1vw,8px) 2px clamp(14px,2vw,18px);font-size:clamp(10px,1.1vw,11px);color:var(--mute);border-bottom:1px solid var(--hair);margin-bottom:clamp(16px,2.5vw,22px)}
+.result-title{font-size:clamp(28px,5.5vw,38px);margin:0 0 clamp(8px,1.2vw,10px);letter-spacing:-.02em}
+.result-sub{margin:0 0 clamp(18px,3vw,26px);color:var(--mute);font-size:clamp(11px,1.2vw,13px)}
+.result-canvas{max-width:500px;width:100%;margin:0 auto}
+.side .btnrow{display:flex;flex-direction:column;align-items:stretch;gap:clamp(10px,1.5vw,12px)}
+.side .btnrow .btn{width:100%}
+.side .btnrow .btn.ghost{width:100%}
+.btnrow .btn-group{display:flex;gap:clamp(10px,1.5vw,12px)}
+.btnrow .btn-group .btn{flex:1}
+.side .lbl{font-size:clamp(9px,1vw,10px);color:var(--mute);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:clamp(8px,1.2vw,10px)}
+.side .lbl.left{text-align:left}
+.side .big{font-size:clamp(16px,2.2vw,20px);text-align:center}
+.side .foot{margin-top:auto;padding-top:clamp(8px,1.2vw,10px)}
+.meta{display:flex;justify-content:space-between;padding:clamp(6px,1vw,8px) 2px clamp(14px,2vw,18px);font-size:clamp(10px,1.1vw,11px);color:var(--mute);border-bottom:1px solid var(--hair);margin-bottom:clamp(16px,2.5vw,22px)}
+.result-title{font-size:clamp(28px,5.5vw,38px);margin:0 0 clamp(8px,1.2vw,10px);letter-spacing:-.02em;text-align:left}
+.result-sub{margin:0 0 clamp(18px,3vw,26px);color:var(--mute);font-size:clamp(11px,1.2vw,13px);text-align:left}
+.result-canvas{width:100%;max-width:520px;margin:0 auto}
+.two .result-canvas{margin:0 auto}
+.two .side{display:flex;flex-direction:column;justify-content:center;min-height:auto}
+.two .side .btnrow{width:100%;max-width:420px;margin:0 auto}
+.btnrow.result-actions{width:100%}
+.btnrow.result-actions .btn{width:100%}
+.btnrow.result-actions .btn-group{display:flex;gap:clamp(10px,1.5vw,12px)}
+.btnrow.result-actions .btn-group .btn{flex:1}
+footer{padding-top:clamp(28px,4vw,36px);font-size:clamp(10px,1.1vw,10.5px);color:var(--mute);text-align:center;width:100%;max-width:1100px;margin:0 auto}
 .verify-overlay{position:fixed;inset:0;background:var(--paper);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px}
 .verify-card{max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;gap:clamp(10px,1.5vw,14px)}
 .verify-logo img{width:clamp(72px,10vw,90px);height:clamp(72px,10vw,90px);object-fit:contain;margin:0 auto}
@@ -99,6 +114,13 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
 .verify-input:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(10,10,10,.08)}
 .verify-btn{margin-top:4px}
 .verify-err{font-size:clamp(11px,1.2vw,12px);color:#b91c1c;line-height:1.5}
+@media (max-width:768px){
+  .two{grid-template-columns:1fr;gap:clamp(20px,4vw,28px);align-items:stretch}
+  .result-canvas{max-width:100%}
+  .two .side{justify-content:flex-start}
+  .side .btnrow{max-width:100%}
+  .meta{flex-direction:column;gap:4px;text-align:left}
+}
 </style>
 </head>
 <body>
@@ -117,39 +139,13 @@ footer{padding-top:clamp(20px,3vw,28px);font-size:clamp(10px,1.1vw,10.5px);color
    </div>
  </div>
 
- <div class="wrap">
+<div class="wrap">
   <header>
     <div class="brand">
       <img class="logo" id="headerLogo" src="SEED_LOGO.png" alt="S.E.E.D logo" onerror="this.style.display='none'">
       <div class="brandtext"><b>Regeneration S.E.E.D</b><span>Photo Booth</span></div>
-      <button class="btn" id="openServerSettingsBtn" type="button" style="margin-left:auto">Server Settings</button>
     </div>
   </header>
-
-  <!-- SETTINGS -->
-  <section id="screen-server-settings" class="screen">
-    <div class="top">
-      <button class="btn ghost" id="serverSettingsBackBtn" type="button">← Back</button>
-      <div><div class="step">Setup</div><div class="title">Local Server Settings</div></div>
-      <div class="spacer"></div>
-    </div>
-    <div class="two">
-      <div class="panel side">
-        <div><div class="lbl">Local Server</div><div class="title big">Configuration</div></div>
-        <div><div class="lbl left">Server Base URL</div><input type="text" id="serverBaseUrlInput" class="verify-input" placeholder="http://192.168.1.50:3000" autocomplete="off"></div>
-        <p style="color:var(--mute);font-size:clamp(10px,1.2vw,11px);margin:0">Run the included server.js with Node.js and enter its address here. Make sure your phone and PC are on the same network.</p>
-        <div class="foot"><button class="btn" id="testServerBtn" type="button">Test Connection</button><button class="btn" id="saveServerSettingsBtn" type="button" style="margin-left:8px">Save Settings</button></div>
-        <div id="serverTestResult" style="font-size:clamp(10px,1.1vw,11px);color:var(--mute);margin-top:8px;display:none"></div>
-      </div>
-      <div class="panel side">
-        <div><div class="lbl">Google Drive</div><div class="title big">Upload Webhook</div></div>
-        <div><div class="lbl left">Apps Script URL</div><input type="text" id="driveWebhookUrlInput" class="verify-input" placeholder="Paste your Google Apps Script webhook URL" autocomplete="off"></div>
-        <p style="color:var(--mute);font-size:clamp(10px,1.2vw,11px);margin:0">Use the included Apps Script code to create a webhook. It will save strips directly to your Drive folder without any Client ID or local server.</p>
-        <div class="foot"><button class="btn" id="saveWebhookBtn" type="button">Save Webhook URL</button></div>
-        <div id="driveStatus" style="font-size:clamp(10px,1.1vw,11px);color:var(--mute);margin-top:8px;display:none"></div>
-      </div>
-    </div>
-  </section>
 
   <!-- MODES -->
   <section id="screen-modes" class="screen active">
