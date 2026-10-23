@@ -7,127 +7,204 @@
 <link rel="icon" href="LOGO2.0.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-:root{--ink:#0a0a0a;--paper:#fff;--mute:#6b6b68;--hair:#e5e5e5}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:'IBM Plex Mono',ui-monospace,monospace;-webkit-tap-highlight-color:transparent}
-.wrap{min-height:100%;max-width:1100px;margin:0 auto;padding:clamp(20px,3vw,28px) clamp(20px,3vw,28px) clamp(28px,4vw,36px)}
-header{display:flex;align-items:center;justify-content:space-between;padding:clamp(8px,1.2vw,10px) 2px clamp(18px,2.5vw,24px)}
-.brand{display:flex;align-items:center;gap:clamp(8px,1.5vw,12px)}
-.logo{width:clamp(56px,8vw,80px);height:clamp(56px,8vw,80px);object-fit:contain}
-.brandtext b{font-family:'Space Grotesk',sans-serif;font-size:clamp(12px,1.6vw,14px);display:block}
-.brandtext span{font-size:clamp(9px,1.1vw,10px);color:var(--mute)}
-h1,h2,.title{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-.02em}
-.hero{text-align:center;padding:clamp(28px,5vw,40px) 0 clamp(24px,4vw,32px)}
-.hero h1{font-size:clamp(34px,7.5vw,52px);margin:0 0 10px;line-height:1.05}
-.hero p{color:var(--mute);font-size:clamp(11px,1.3vw,13px);margin:0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(12px,2vw,20px);padding-bottom:clamp(24px,4vw,40px)}
-.card,.panel{border:1px solid var(--ink);border-radius:clamp(14px,2vw,18px);overflow:hidden;background:var(--paper)}
-.card{display:flex;flex-direction:column}
-.card-art{height:clamp(140px,20vw,200px);display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid var(--hair)}
-.card-art.mid{background:var(--hair)}
-.badge{position:absolute;top:clamp(8px,1.2vw,12px);left:50%;transform:translateX(-50%);background:var(--paper);font-size:clamp(8px,1vw,9px);padding:clamp(3px,.5vw,4px) clamp(6px,1vw,10px);border-radius:999px;border:1px solid var(--ink);text-transform:uppercase;letter-spacing:.1em}
-.card-body{padding:clamp(14px,2.5vw,20px) clamp(12px,2vw,18px) clamp(16px,2.5vw,22px);text-align:center;display:flex;flex-direction:column;gap:clamp(6px,1vw,8px);flex:1}
-.card-body h2{font-size:clamp(16px,2.5vw,20px);margin:0}
-.card-body p{color:var(--mute);font-size:clamp(10px,1.2vw,11.5px);margin:0}
-.card-body .btn{margin-top:auto}
-.btn{width:100%;border:1px solid var(--ink);background:var(--paper);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(12px,1.4vw,13px);padding:clamp(10px,1.5vw,12px);cursor:pointer;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
-.btn.ghost{width:auto;padding:clamp(8px,1.2vw,10px) clamp(10px,1.5vw,14px);font-size:clamp(11px,1.2vw,12px)}
-.btn:hover:not(:disabled){background:var(--ink);color:var(--paper)}
-.btn:disabled{opacity:.35;cursor:not-allowed}
-.btn.accent{background:#f87171;color:#fff;border-color:#f87171}
-.screen{display:none}
-.screen.active{display:block}
-.top{display:flex;align-items:center;justify-content:space-between;padding:clamp(8px,1.2vw,10px) 2px clamp(16px,2.5vw,20px);flex-wrap:wrap;gap:8px}
-.top .step{font-size:clamp(9px,1vw,10px);color:var(--mute);text-transform:uppercase;letter-spacing:.1em;text-align:center}
-.top .title{font-size:clamp(14px,1.6vw,16px);text-align:center}
-.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(20px,3vw,32px);align-items:center}
-.bar{display:flex;align-items:center;justify-content:space-between;padding:clamp(8px,1.2vw,10px) clamp(10px,1.5vw,12px);border-bottom:1px solid var(--hair);font-size:clamp(10px,1.1vw,11px)}
-.pill{font-size:clamp(9px,1vw,10px);padding:clamp(3px,.5vw,4px) clamp(6px,1vw,10px);border-radius:999px;border:1px solid var(--ink);text-transform:uppercase;letter-spacing:.08em}
-.side{padding:clamp(16px,2.5vw,22px) clamp(14px,2vw,18px);display:flex;flex-direction:column;gap:clamp(12px,1.8vw,16px)}
-.side .lbl{font-size:clamp(9px,1vw,10px);color:var(--mute);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:4px}
-.side .lbl.left{text-align:left}
-.side .big{font-size:clamp(16px,2.2vw,20px);text-align:center}
-.side .foot{margin-top:auto;padding-top:clamp(8px,1.2vw,10px)}
-.stage{position:relative;width:100%;max-width:520px;aspect-ratio:1/1;background:#000;margin:0 auto}
-.stage video{width:100%;height:100%;object-fit:cover;display:block}
-.icon{background:var(--ink);color:var(--paper);border:none;width:clamp(24px,3vw,28px);height:clamp(24px,3vw,28px);border-radius:clamp(6px,1vw,8px);cursor:pointer;font-size:clamp(12px,1.5vw,14px)}
-select{width:100%;border:1px solid var(--ink);background:var(--paper);color:var(--ink);font-family:inherit;font-size:clamp(11px,1.2vw,12px);padding:clamp(8px,1.2vw,10px) clamp(10px,1.5vw,12px);border-radius:clamp(10px,1.5vw,12px)}
-.mirror{display:flex;align-items:center;justify-content:space-between;padding:clamp(10px,1.5vw,12px) clamp(12px,1.8vw,14px);border:1px solid var(--ink);border-radius:clamp(12px,1.8vw,14px);font-size:clamp(12px,1.4vw,13px);font-weight:500}
-.sw{position:relative;width:clamp(40px,5vw,48px);height:clamp(24px,3vw,28px);cursor:pointer;display:inline-block}
-.sw input{opacity:0;width:0;height:0}
-.sw .tr{position:absolute;inset:0;background:var(--hair);border-radius:999px;transition:.2s}
-.sw .th{position:absolute;left:clamp(3px,.5vw,4px);top:clamp(3px,.5vw,4px);width:clamp(16px,2vw,20px);height:clamp(16px,2vw,20px);background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
-.sw input:checked~.tr{background:var(--ink)}
-.sw input:checked~.th{transform:translateX(clamp(16px,2vw,20px))}
-.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr));gap:clamp(8px,1.2vw,10px)}
-.opts.three{grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));max-height:clamp(220px,30vw,260px);overflow-y:auto;padding-right:4px}
-.opt{border:1px solid var(--hair);background:var(--paper);color:var(--ink);border-radius:clamp(10px,1.5vw,14px);padding:clamp(6px,1vw,8px);cursor:pointer;font-family:inherit;font-size:clamp(10px,1.1vw,11px);text-align:center}
-.opt.active{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
-.opt i{display:block;height:clamp(36px,5vw,48px);border-radius:clamp(6px,1vw,8px);margin-bottom:clamp(4px,.8vw,6px)}
-.layouts{display:flex;gap:clamp(6px,1vw,8px);justify-content:center;flex-wrap:wrap}
-.lay{border:1px solid var(--ink);background:var(--paper);color:var(--ink);border-radius:clamp(8px,1.2vw,10px);padding:clamp(5px,.8vw,6px) clamp(10px,1.5vw,12px);cursor:pointer;font-family:inherit;font-size:clamp(10px,1.1vw,11px)}
-.lay.active{background:var(--ink);color:var(--paper)}
-.strip{height:auto;max-width:100%;border:1px solid var(--ink);border-radius:12px;display:block;margin:0 auto}
-.pad{padding:clamp(12px,2vw,16px)}
-.count{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(64px,10vw,120px);color:#fff;background:rgba(0,0,0,.15);mix-blend-mode:difference}
-.frameno{position:absolute;top:clamp(8px,1.2vw,10px);left:clamp(8px,1.2vw,10px);font-size:clamp(10px,1.1vw,11px);color:#fff;padding:clamp(3px,.5vw,4px) clamp(6px,1vw,8px);border:1px solid #fff;mix-blend-mode:difference}
-#startBtn,#pmStartBtn{position:absolute;bottom:clamp(14px,2vw,18px);left:50%;transform:translateX(-50%);background:#facc15;color:var(--ink);border:none;padding:clamp(10px,1.5vw,12px) clamp(20px,3vw,28px);border-radius:999px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(12px,1.4vw,14px);cursor:pointer}
-#startBtn:disabled,#pmStartBtn:disabled{opacity:.5}
-#err{font-size:clamp(11px,1.2vw,12px);color:#b91c1c;margin-top:12px;display:none;line-height:1.6}
-.meta{display:flex;justify-content:space-between;padding:clamp(6px,1vw,8px) 2px clamp(14px,2vw,18px);font-size:clamp(10px,1.1vw,11px);color:var(--mute);border-bottom:1px solid var(--hair);margin-bottom:clamp(16px,2.5vw,22px)}
-.result-title{font-size:clamp(28px,5.5vw,38px);margin:0 0 clamp(8px,1.2vw,10px);letter-spacing:-.02em}
-.result-sub{margin:0 0 clamp(18px,3vw,26px);color:var(--mute);font-size:clamp(11px,1.2vw,13px)}
-.result-canvas{max-width:500px;width:100%;margin:0 auto}
-.side .btnrow{display:flex;flex-direction:column;align-items:stretch;gap:clamp(10px,1.5vw,12px)}
-.side .btnrow .btn{width:100%}
-.side .btnrow .btn.ghost{width:100%}
-.btnrow .btn-group{display:flex;gap:clamp(10px,1.5vw,12px)}
-.btnrow .btn-group .btn{flex:1}
-.side .lbl{font-size:clamp(9px,1vw,10px);color:var(--mute);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:clamp(8px,1.2vw,10px)}
-.side .lbl.left{text-align:left}
-.side .big{font-size:clamp(16px,2.2vw,20px);text-align:center}
-.side .foot{margin-top:auto;padding-top:clamp(8px,1.2vw,10px)}
-.meta{display:flex;justify-content:space-between;padding:clamp(6px,1vw,8px) 2px clamp(14px,2vw,18px);font-size:clamp(10px,1.1vw,11px);color:var(--mute);border-bottom:1px solid var(--hair);margin-bottom:clamp(16px,2.5vw,22px)}
-.result-title{font-size:clamp(28px,5.5vw,38px);margin:0 0 clamp(8px,1.2vw,10px);letter-spacing:-.02em;text-align:left}
-.result-sub{margin:0 0 clamp(18px,3vw,26px);color:var(--mute);font-size:clamp(11px,1.2vw,13px);text-align:left}
-.result-canvas{width:100%;max-width:520px;margin:0 auto}
-.two .result-canvas{margin:0 auto}
-.two .side{display:flex;flex-direction:column;justify-content:center;min-height:auto}
-.two .side .btnrow{width:100%;max-width:420px;margin:0 auto}
-.btnrow.result-actions{width:100%}
-.btnrow.result-actions .btn{width:100%}
-.btnrow.result-actions .btn-group{display:flex;gap:clamp(10px,1.5vw,12px)}
-.btnrow.result-actions .btn-group .btn{flex:1}
-footer{padding-top:clamp(28px,4vw,36px);font-size:clamp(10px,1.1vw,10.5px);color:var(--mute);text-align:center;width:100%;max-width:1100px;margin:0 auto}
-.verify-overlay{position:fixed;inset:0;background:var(--paper);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px}
-.verify-card{max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;gap:clamp(10px,1.5vw,14px)}
-.verify-logo img{width:clamp(72px,10vw,90px);height:clamp(72px,10vw,90px);object-fit:contain;margin:0 auto}
-.verify-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(24px,4vw,32px);margin:0;letter-spacing:-.02em}
-.verify-sub{color:var(--mute);font-size:clamp(11px,1.2vw,13px);margin:0}
-.verify-question{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(14px,1.6vw,18px);background:var(--hair);border:1px solid var(--ink);border-radius:14px;padding:clamp(12px,1.8vw,16px);text-align:center;letter-spacing:.02em;line-height:1.5}
-.verify-hint{font-size:clamp(11px,1.1vw,12px);color:var(--mute);font-style:italic}
-.verify-input{width:100%;border:1px solid var(--ink);background:var(--paper);color:var(--ink);font-family:inherit;font-size:clamp(13px,1.4vw,15px);padding:clamp(10px,1.4vw,12px) clamp(12px,1.6vw,14px);border-radius:14px;text-align:center;outline:none;transition:border-color .15s}
-.verify-input:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(10,10,10,.08)}
-.verify-btn{margin-top:4px}
-.verify-err{font-size:clamp(11px,1.2vw,12px);color:#b91c1c;line-height:1.5}
-@media (max-width:768px){
-  .two{grid-template-columns:1fr;gap:clamp(20px,4vw,28px);align-items:stretch}
-  .result-canvas{max-width:100%}
-  .two .side{justify-content:flex-start}
-  .side .btnrow{max-width:100%}
-  .meta{flex-direction:column;gap:4px;text-align:left}
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#0f2a22;--moss:#1d4536;--sage:#eef2ee;--sage2:#dfe7e0;--paper:#fff;
+  --ink:#14231d;--mute:#64736c;--hair:rgba(15,42,34,.13);--gold:#c4a05a;--gold-d:#a8853f;--err:#b3261e;
+  --serif:'Fraunces',Georgia,serif;--sans:'Manrope',system-ui,-apple-system,sans-serif;
+  --gutter:clamp(16px,3vw,32px);
 }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{min-height:100%}
+body{margin:0;background:var(--sage);color:var(--ink);font:400 14px/1.55 var(--sans);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+h1,h2,.title{font-family:var(--serif);font-weight:600;letter-spacing:-.015em;margin:0}
+:focus-visible{outline:2px solid var(--gold-d);outline-offset:3px}
+
+/* Layout shell */
+.wrap{min-height:100vh;max-width:1120px;margin:0 auto;display:flex;flex-direction:column;
+  padding:calc(var(--gutter) + env(safe-area-inset-top,0px)) calc(var(--gutter) + env(safe-area-inset-right,0px)) calc(var(--gutter) + env(safe-area-inset-bottom,0px)) calc(var(--gutter) + env(safe-area-inset-left,0px))}
+header{display:flex;align-items:center;justify-content:space-between;padding-bottom:clamp(14px,2vw,20px);border-bottom:1px solid var(--hair)}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:clamp(48px,6vw,64px);height:clamp(48px,6vw,64px);object-fit:contain}
+.brandtext b{display:block;font:600 clamp(15px,1.8vw,17px)/1.2 var(--serif);letter-spacing:-.01em}
+.brandtext span{font-size:12.5px;color:var(--mute)}
+.screen{display:none}
+.screen.active{display:block;flex:1 0 auto;padding-bottom:clamp(28px,4vw,48px);animation:fade .3s ease}
+@keyframes fade{from{opacity:0}}
+footer{margin-top:auto;padding-top:20px;border-top:1px solid var(--hair);font-size:12.5px;color:var(--mute);text-align:center}
+#err{display:none;margin-top:12px;font-size:13px;line-height:1.6;color:var(--err);text-align:center}
+
+/* Mode picker */
+.hero{text-align:center;padding:clamp(32px,6vw,64px) 0 clamp(26px,4vw,44px)}
+.hero h1{font-size:clamp(36px,7vw,64px);line-height:1.04;max-width:14ch;margin:0 auto 14px;text-wrap:balance}
+.hero p{margin:0;color:var(--mute);font-size:clamp(14px,1.5vw,16px)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(14px,2vw,24px)}
+.card,.panel{background:var(--paper);border:1px solid var(--hair);box-shadow:0 1px 2px rgba(15,42,34,.05),0 24px 48px -28px rgba(15,42,34,.28);overflow:hidden}
+.card{display:flex;flex-direction:column;border-radius:28px;transition:transform .25s ease,box-shadow .25s ease}
+.card:has(.btn:not(:disabled)):hover{transform:translateY(-3px);box-shadow:0 1px 2px rgba(15,42,34,.05),0 32px 56px -28px rgba(15,42,34,.4)}
+.card:has(.btn:disabled){opacity:.72}
+.card-art{position:relative;height:clamp(150px,20vw,210px);display:flex;align-items:center;justify-content:center;background:var(--forest);color:#e9f0ea}
+.card-art.mid{background:var(--sage2);color:var(--forest)}
+.badge{position:absolute;top:16px;left:16px;padding:5px 12px;border-radius:999px;background:var(--gold);color:var(--forest);font-size:12px;font-weight:700}
+.card-art.mid .badge{background:var(--paper);color:var(--ink)}
+.card-body{flex:1;display:flex;flex-direction:column;gap:6px;padding:22px 24px 24px;text-align:left}
+.card-body h2{font-size:clamp(22px,2.6vw,26px)}
+.card-body p{margin:0 0 14px;color:var(--mute)}
+.card-body .btn{margin-top:auto}
+
+/* Buttons */
+.btn{width:100%;min-height:48px;padding:0 22px;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--forest);border-radius:999px;background:var(--forest);color:#fff;font:600 14px/1 var(--sans);cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .18s}
+.btn:hover:not(:disabled){background:var(--moss);border-color:var(--moss)}
+.btn:active:not(:disabled){transform:scale(.985)}
+.btn:disabled{background:transparent;color:var(--mute);border-color:var(--hair);cursor:not-allowed}
+.btn.ghost{width:auto;min-height:40px;padding:0 16px;background:transparent;color:var(--forest);border-color:rgba(15,42,34,.25)}
+.btn.ghost:hover:not(:disabled){background:var(--sage2);border-color:var(--forest);color:var(--forest)}
+.side .btn.ghost,.btnrow .btn.ghost{width:100%}
+.icon{width:32px;height:32px;display:grid;place-items:center;border:0;border-radius:10px;background:var(--sage);color:var(--ink);font-size:14px;cursor:pointer;transition:background .15s,color .15s}
+.icon:hover{background:var(--forest);color:#fff}
+
+/* Step header: back | title | counter, title truly centred */
+.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding:clamp(16px,2.4vw,24px) 0 clamp(16px,2.6vw,26px)}
+.top>:first-child{justify-self:start}
+.top>div:nth-child(2){text-align:center}
+.top .step{font-size:12.5px;font-weight:600;color:var(--mute)}
+.top .title{font-size:clamp(20px,2.6vw,26px);line-height:1.15}
+.top .spacer{justify-self:end}
+.top .spacer:not(:empty){padding:6px 14px;border:1px solid var(--hair);border-radius:999px;background:var(--paper);font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+
+/* Two-column workspace */
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(16px,2.4vw,28px);align-items:stretch}
+#screen-result .two,#screen-pm-result .two{align-items:center}
+.panel{border-radius:24px}
+#screen-pm-refs>.panel,#screen-pm-review>.panel{width:100%}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:12px 18px;border-bottom:1px solid var(--hair);font-size:13px;font-weight:600}
+.pill{padding:4px 12px;border:1px solid var(--hair);border-radius:999px;background:var(--sage);font-size:12px;font-weight:600}
+.pad{padding:clamp(16px,2.4vw,26px);background:var(--sage)}
+.side{display:flex;flex-direction:column;gap:20px}
+.panel.side,#screen-result .side,#screen-pm-result .side{padding:clamp(20px,2.6vw,28px)}
+#screen-result .side,#screen-pm-result .side{background:var(--paper);border:1px solid var(--hair);border-radius:24px;box-shadow:0 1px 2px rgba(15,42,34,.05),0 24px 48px -28px rgba(15,42,34,.28)}
+#screen-pm-refs .side,#screen-pm-review .side{padding:clamp(18px,2.6vw,28px)!important}
+.side .lbl{margin-bottom:8px;font-size:12.5px;font-weight:600;color:var(--mute);text-align:left}
+.side .big{font-size:clamp(22px,2.6vw,28px);line-height:1.15;text-align:left}
+.side .foot{margin-top:auto;padding-top:8px;display:flex;flex-direction:column;gap:10px}
+#screen-pm-review .foot{flex-direction:row;flex-wrap:wrap}
+#screen-pm-review .foot .btn{flex:1 1 160px;width:auto}
+.side>.bar{padding:16px 0 0!important;min-height:0;border-bottom:0;border-top:1px solid var(--hair)!important}
+
+/* Camera stage */
+.stage{position:relative;width:100%;aspect-ratio:1/1;background:#0b1511;overflow:hidden}
+.stage video{width:100%;height:100%;display:block;object-fit:cover}
+.stage:fullscreen{width:100vw;height:100vh;aspect-ratio:auto}
+.stage:-webkit-full-screen{width:100vw;height:100vh;aspect-ratio:auto}
+.count{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(11,21,17,.28);color:#fff;font:600 clamp(80px,14vw,160px)/1 var(--serif);text-shadow:0 4px 32px rgba(0,0,0,.35)}
+.frameno{position:absolute;top:14px;left:14px;padding:5px 12px;border-radius:999px;background:rgba(11,21,17,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+#startBtn,#pmStartBtn{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);min-height:48px;padding:0 32px;border:0;border-radius:999px;background:var(--gold);color:var(--forest);font:700 15px var(--sans);cursor:pointer;box-shadow:0 10px 24px -8px rgba(0,0,0,.55)}
+#startBtn:hover:not(:disabled),#pmStartBtn:hover:not(:disabled){background:#d4b270}
+#startBtn:disabled,#pmStartBtn:disabled{opacity:.5}
+
+/* Controls */
+select,.verify-input{width:100%;min-height:48px;padding:0 16px;border:1px solid var(--hair);border-radius:14px;background:var(--paper);color:var(--ink);font:500 14px var(--sans);outline:none;transition:border-color .15s,box-shadow .15s}
+select{-webkit-appearance:none;appearance:none;padding-right:44px;cursor:pointer;background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%230f2a22' stroke-width='1.8' stroke-linecap='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 18px center}
+select:focus,.verify-input:focus{border-color:var(--forest);box-shadow:0 0 0 3px rgba(15,42,34,.1)}
+.mirror{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:10px 16px;border:1px solid var(--hair);border-radius:14px;font-size:14px;font-weight:600}
+.sw{position:relative;flex:none;display:inline-block;width:48px;height:28px;cursor:pointer}
+.sw input{width:0;height:0;opacity:0}
+.sw .tr{position:absolute;inset:0;border-radius:999px;background:var(--sage2);transition:background .2s}
+.sw .th{position:absolute;top:4px;left:4px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.sw input:checked~.tr{background:var(--forest)}
+.sw input:checked~.th{transform:translateX(20px)}
+.sw input:focus-visible~.tr{outline:2px solid var(--gold-d);outline-offset:3px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,104px),1fr));gap:10px}
+.opts.three{max-height:clamp(240px,34vw,300px);overflow-y:auto;padding:2px 4px 2px 2px;scrollbar-width:thin}
+.opt{padding:8px;border:1px solid var(--hair);border-radius:14px;background:var(--paper);color:var(--ink);font:600 12px/1.3 var(--sans);text-align:center;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.opt:hover{border-color:rgba(15,42,34,.4)}
+.opt.active{border-color:var(--forest);box-shadow:0 0 0 1px var(--forest)}
+.opt i{display:block;height:48px;margin-bottom:6px;border-radius:9px}
+.layouts{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--hair);border-radius:999px;background:var(--sage)}
+.lay{min-height:36px;padding:0 16px;border:0;border-radius:999px;background:transparent;color:var(--ink);font:600 13px var(--sans);cursor:pointer;transition:background .15s,color .15s}
+.lay.active{background:var(--forest);color:#fff}
+
+/* Strips and results */
+.strip{display:block;width:auto;height:auto;max-width:100%;max-height:72vh;margin:0 auto;border-radius:10px;box-shadow:0 1px 3px rgba(15,42,34,.15),0 18px 36px -18px rgba(15,42,34,.4)}
+.result-canvas{display:flex;justify-content:center;width:100%}
+.meta{display:flex;justify-content:space-between;gap:12px;padding:clamp(16px,2.4vw,22px) 0 14px;margin-bottom:clamp(18px,3vw,30px);border-bottom:1px solid var(--hair);font-size:13px;color:var(--mute)}
+.result-title{margin:0 0 8px;font-size:clamp(32px,5.5vw,48px);line-height:1.05;text-align:left}
+.result-sub{margin:0 0 clamp(20px,3vw,32px);color:var(--mute);font-size:clamp(14px,1.4vw,15px);text-align:left}
+.btnrow{display:flex;flex-direction:column;gap:10px;width:100%}
+.btnrow .btn-group{display:flex;gap:10px}
+.btnrow .btn-group .btn{flex:1}
+#screen-pm-final .foot{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+#screen-pm-final .foot .btn{padding:0 10px}
+#pmFinalDownloadBtn{grid-column:1/-1}
+
+/* Pose Match */
+#screen-pm-capture>.two{grid-template-columns:minmax(0,1fr);align-items:start}
+#screen-pm-capture>.two>.panel:first-child{width:min(100%,112vh,992px);margin:0 auto}
+#screen-pm-capture .stage{aspect-ratio:16/10}
+#screen-pm-capture .side>*{width:100%;max-width:720px;margin-inline:auto}
+.pm-reference-pose{position:absolute;top:14px;left:14px;z-index:10;width:clamp(76px,10vw,104px);aspect-ratio:1;display:none;overflow:hidden;border:2px solid #fff;border-radius:14px;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.pm-reference-pose img{width:100%;height:100%;object-fit:cover}
+.pm-capture-slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.pm-capture-slots>div,.pm-review-grid>div{position:relative;aspect-ratio:1;overflow:hidden;border-radius:14px;background:var(--sage)}
+.pm-capture-slots>div{border:1.5px dashed rgba(15,42,34,.28);transition:box-shadow .2s}
+.pm-capture-slots>div:has(>img){border:2px solid var(--forest)}
+.pm-capture-slots>div:hover,.pm-capture-slots>div:focus-visible,.pm-review-grid>div:hover,.pm-review-grid>div:focus-visible{box-shadow:0 0 0 3px var(--gold)}
+.pm-capture-slots img,.pm-review-grid img{width:100%;height:100%;display:block;object-fit:cover}
+.pm-capture-slots>div>div,.pm-review-grid>div>div{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mute);font-size:11px;text-align:center}
+.pm-capture-slots>div>div>span:first-child,.pm-review-grid>div>div>span:first-child{display:block;font:600 26px/1.1 var(--serif);color:var(--forest)}
+.pm-capture-slots button,.pm-review-grid button,#pmRefSelectionTray button{position:absolute;top:6px;right:6px;width:24px;height:24px;border:0;border-radius:50%;background:var(--forest);color:#fff;font-size:14px;line-height:1;cursor:pointer}
+.pm-review-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,168px));justify-content:center;gap:14px}
+.pm-review-grid>div{aspect-ratio:3/4;border:3px solid var(--hair);cursor:pointer}
+#pmRefImageGrid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));max-height:500px;overflow-y:auto;padding-right:4px}
+#pmRefImageGrid .opt{display:flex;flex-direction:column;align-items:center;gap:4px}
+#pmRefImageGrid .opt img{width:100%;aspect-ratio:1;object-fit:cover;border:2px solid transparent;border-radius:8px;transition:border-color .2s}
+#pmRefImageGrid .opt.active img{border-color:var(--gold);box-shadow:0 0 0 3px rgba(196,160,90,.3)}
+#pmRefSelectionTray{grid-template-columns:repeat(4,minmax(0,110px));min-height:100px}
+#pmRefSelectionTray>div{position:relative}
+#pmRefSelectionTray>div img{width:100%;aspect-ratio:1;object-fit:cover;border:2px solid var(--forest);border-radius:12px}
+
+#pmRefImageGrid,#pmRefSelectionTray{margin-bottom:0!important}
+#pmReviewGrid{grid-template-columns:repeat(auto-fill,minmax(120px,168px))!important;gap:14px!important;margin-bottom:0!important}
+#screen-pm-capture .panel.side{width:100%;max-width:none!important}
+#screen-pm-final .mirror{margin-top:0!important}
+#pmFinalTitle{text-align:left}
+
+/* Verification gate */
+.verify-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;background:var(--forest)}
+.verify-card{width:100%;max-width:440px;display:flex;flex-direction:column;gap:14px;padding:clamp(28px,5vw,40px);border-radius:28px;background:var(--paper);text-align:center;box-shadow:0 40px 80px -30px rgba(0,0,0,.6)}
+.verify-logo img{display:block;width:clamp(72px,10vw,88px);height:clamp(72px,10vw,88px);margin:0 auto 4px;object-fit:contain}
+.verify-title{margin:0;font-size:clamp(26px,4.5vw,32px);line-height:1.1}
+.verify-sub{margin:0;color:var(--mute)}
+.verify-question{padding:16px;border:1px solid var(--hair);border-radius:16px;background:var(--sage);font:700 15px/1.45 var(--sans);letter-spacing:.02em}
+.verify-hint{font-size:12.5px;font-style:italic;color:var(--mute)}
+.verify-input{text-align:center}
+.verify-btn{margin-top:4px}
+.verify-err{font-size:13px;line-height:1.5;color:var(--err)}
+
+@media (max-width:768px){
+  .two,#screen-pm-capture>.two{grid-template-columns:1fr}
+  .meta{flex-direction:column;gap:2px}
+  .pm-capture-slots{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #pmRefSelectionTray{grid-template-columns:repeat(2,minmax(0,110px))}
+  .top .btn.ghost{padding:0 12px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<script>
+/* Diagnostic only: if script.js is missing or crashes, say so inside the verification card. Does nothing otherwise. */
+addEventListener('error',function(e){var t=e.target,m=document.getElementById('verifyErr');
+if(!m)return;
+if(t&&t.tagName==='SCRIPT'){m.style.display='block';m.textContent='Could not load '+(t.getAttribute('src')||'script.js')+'. Put it in the same folder as index.html, then hard-refresh (Ctrl+Shift+R).';}
+else if(e.message){m.style.display='block';m.textContent='Script error: '+e.message+' ('+(e.filename||'').split('/').pop()+':'+e.lineno+')';}
+},true);
+</script>
 </head>
 <body>
-  <div id="verification-overlay" class="verify-overlay">
+<div id="verification-overlay" class="verify-overlay">
   <div class="verify-card">
-    <div class="verify-logo">
-      <img id="verifyLogo" src="SEED_LOGO.png" alt="S.E.E.D logo" onerror="this.style.display='none'">
-    </div>
+    <div class="verify-logo"><img id="verifyLogo" src="SEED_LOGO.png" alt="S.E.E.D logo" onerror="this.style.display='none'"></div>
     <h1 class="verify-title">Verification Required</h1>
     <p class="verify-sub">Enter the correct answer to continue.</p>
     <div class="verify-question">WHAT IS THE MEANING OF S.E.E.D?</div>
@@ -135,10 +212,10 @@ footer{padding-top:clamp(28px,4vw,36px);font-size:clamp(10px,1.1vw,10.5px);color
     <input type="text" id="verifyInput" class="verify-input" placeholder="Type your answer here..." autocomplete="off">
     <button id="verifyBtn" class="btn verify-btn" type="button">Continue →</button>
     <div id="verifyErr" class="verify-err" style="display:none">Incorrect answer. Please try again.</div>
-   </div>
   </div>
+</div>
 
-  <div class="wrap">
+<div class="wrap">
   <header>
     <div class="brand">
       <img class="logo" id="headerLogo" src="SEED_LOGO.png" alt="S.E.E.D logo" onerror="this.style.display='none'">
@@ -287,34 +364,34 @@ footer{padding-top:clamp(28px,4vw,36px);font-size:clamp(10px,1.1vw,10.5px);color
     </div>
   </section>
 
-  <!-- POSE MATCH STEP 1 -->
-  <section id="screen-pm-settings" class="screen">
+  <!-- POSE MATCH 1 -->
+  <section id="screen-pm-step1" class="screen">
     <div class="top">
-      <button class="btn ghost" id="pmSettingsBackBtn" type="button">← Back</button>
-      <div><div class="step">Step 1</div><div class="title">Camera Settings</div></div>
+      <button class="btn ghost" id="pmStep1BackBtn" type="button">← Back</button>
+      <div><div class="step">Step 1 of 8</div><div class="title">Camera Settings</div></div>
       <div class="spacer"></div>
     </div>
     <div class="two">
       <div class="panel">
-        <div class="bar"><span>Camera Preview</span><button class="icon" id="fullscreenPmBtn" type="button">⛶</button></div>
-        <div class="stage" id="stagePm1"><video id="pmSettingsLive" autoplay playsinline muted></video></div>
+        <div class="bar"><span>Camera Preview</span><button class="icon" id="fullscreenPmStep1Btn" type="button">⛶</button></div>
+        <div class="stage" id="stagePmStep1"><video id="pmStep1Live" autoplay playsinline muted></video></div>
       </div>
       <div class="panel side">
         <div><div class="lbl">Setup</div><div class="title big">Your Camera</div></div>
-        <div><div class="lbl left">Select camera</div><select id="pmCameraSelect"><option>Detecting cameras…</option></select></div>
+        <div><div class="lbl left">Select camera</div><select id="pmStep1CameraSelect"><option>Detecting cameras…</option></select></div>
         <div class="mirror">Mirror
-          <label class="sw"><input type="checkbox" id="pmMirrorToggle" checked><span class="tr"></span><span class="th"></span></label>
+          <label class="sw"><input type="checkbox" id="pmStep1MirrorToggle" checked><span class="tr"></span><span class="th"></span></label>
         </div>
-        <div class="foot"><button class="btn" id="continuePmSettingsBtn" type="button">Continue →</button></div>
+        <div class="foot"><button class="btn" id="pmStep1ContinueBtn" type="button">Continue →</button></div>
       </div>
     </div>
   </section>
 
-  <!-- POSE MATCH STEP 2 -->
+  <!-- POSE MATCH 2 -->
   <section id="screen-pm-filter" class="screen">
     <div class="top">
       <button class="btn ghost" id="pmFilterBackBtn" type="button">← Back</button>
-      <div><div class="step">Step 2</div><div class="title">Choose Filter</div></div>
+      <div><div class="step">Step 2 of 8</div><div class="title">Choose Filter</div></div>
       <div class="spacer"></div>
     </div>
     <div class="two">
@@ -325,78 +402,144 @@ footer{padding-top:clamp(28px,4vw,36px);font-size:clamp(10px,1.1vw,10.5px);color
       <div class="panel side">
         <div><div class="lbl">Filter</div><div class="title big">Pick your look</div></div>
         <div class="opts" id="pmFilterGrid"></div>
-        <div class="foot"><button class="btn" id="continuePmFilterBtn" type="button">Continue →</button></div>
+        <div class="foot"><button class="btn accent" id="pmFilterContinueBtn" type="button">Continue →</button></div>
       </div>
     </div>
   </section>
 
-  <!-- POSE MATCH STEP 3 -->
+  <!-- POSE MATCH 3 -->
   <section id="screen-pm-strip" class="screen">
     <div class="top">
       <button class="btn ghost" id="pmStripBackBtn" type="button">← Back</button>
-      <div><div class="step">Step 3</div><div class="title">Strip Design</div></div>
+      <div><div class="step">Step 3 of 8</div><div class="title">Strip Design</div></div>
       <div class="spacer"></div>
     </div>
     <div class="two">
       <div class="panel">
-        <div class="bar"><span>Preview</span><span class="pill" id="pmLayoutLabel">2 × 3</span></div>
-        <div class="pad"><canvas id="pmStripPreviewCanvas" class="strip" width="1200" height="1200"></canvas></div>
+        <div class="bar"><span>Preview</span><span class="pill" id="pmLayoutLabel">1 × 3</span></div>
+        <div class="pad"><canvas id="pmStripPreviewCanvas" class="strip" width="684" height="750"></canvas></div>
       </div>
       <div class="panel side">
         <div><div class="lbl">Layout</div>
           <div class="layouts">
-            <button class="lay active" data-layout="2x3" data-mode="posematch" type="button">2 × 3</button>
-            <button class="lay" data-layout="2x2" data-mode="posematch" type="button">2 × 2</button>
-            <button class="lay" data-layout="straight" data-mode="posematch" type="button">1 × 3</button>
+            <button class="lay active" data-mode="posematch" data-layout="1x3" type="button">1 × 3</button>
+            <button class="lay" data-mode="posematch" data-layout="1x4" type="button">1 × 4</button>
           </div>
         </div>
         <div><div class="lbl">Design</div><div class="title big">Pick a style</div></div>
         <div class="opts three" id="pmDesignGrid"></div>
-        <div class="foot"><button class="btn accent" id="continuePmStripBtn" type="button">Continue →</button></div>
+        <div class="foot"><button class="btn accent" id="pmStripContinueBtn" type="button">Continue →</button></div>
       </div>
     </div>
   </section>
 
-  <!-- POSE MATCH STEP 4 -->
+  <!-- POSE MATCH 4 -->
+  <section id="screen-pm-refs" class="screen">
+    <div class="top">
+      <button class="btn ghost" id="pmRefsBackBtn" type="button">← Back</button>
+      <div><div class="step">Step 4 of 8</div><div class="title">Choose References</div></div>
+      <div class="spacer"></div>
+    </div>
+    <div class="panel" style="max-width:1000px;margin:0 auto">
+      <div class="bar"><span>Choose <span id="pmRefRequiredCount">4</span> references to match</span></div>
+      <div class="side" style="padding:20px">
+        <div class="opts" id="pmRefImageGrid" style="max-height:500px;overflow-y:auto;padding-right:4px;margin-bottom:24px"></div>
+        <div class="bar" style="border-top:2px solid var(--ink);padding-top:16px"><span>Selected (<span id="pmRefSelectedCount">0</span>/<span id="pmRefSelectedTotal">4</span>)</span></div>
+        <div class="opts" id="pmRefSelectionTray" style="gap:12px;margin-bottom:24px"></div>
+        <div class="foot"><button class="btn accent" id="pmRefsContinueBtn" type="button" disabled>Continue →</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POSE MATCH 5 -->
   <section id="screen-pm-capture" class="screen">
     <div class="top">
-      <button class="btn ghost" id="pmBackToModesBtn" type="button">← Back</button>
-      <div><div class="step">Step 4</div><div class="title">Photobooth</div></div>
-      <div class="spacer right" id="pmShotCounter">0/6</div>
+      <button class="btn ghost" id="pmCaptureBackBtn" type="button">← Back</button>
+      <div><div class="step">Step 5 of 8</div><div class="title">Photobooth</div></div>
+      <div class="spacer right" id="pmCaptureProgress">0/4</div>
     </div>
     <div class="two">
       <div class="panel">
-        <div class="bar"><span>Preview</span><button class="icon" id="fullscreenPmCapBtn" type="button">⛶</button></div>
-        <div class="stage" id="stagePm4">
-          <video id="pmLive2" autoplay playsinline muted></video>
-          <div class="frameno" id="pmFrameNo">01 / 06</div>
-          <div class="count" id="pmCountEl">3</div>
-          <button id="pmStartBtn" type="button">Start</button>
+        <div class="bar"><span>Live Preview</span><button class="icon" id="fullscreenPmCaptureBtn" type="button">⛶</button></div>
+        <div class="stage" id="stagePmCapture">
+          <video id="pmCaptureLive" autoplay playsinline muted></video>
+          <div class="count" id="pmCaptureCount">3</div>
+          <div class="pm-reference-pose" id="pmReferencePose"></div>
         </div>
       </div>
-      <div class="panel">
-        <div class="bar"><span>Strip Preview</span></div>
-        <div class="pad"><canvas id="pmCaptureStripPreview" class="strip" width="1200" height="1200"></canvas></div>
+      <div class="panel side" style="max-width:360px">
+        <div class="lbl">Capture Slots</div>
+        <div class="pm-capture-slots" id="pmCaptureSlots"></div>
+        <div class="foot"><button class="btn accent" id="pmCaptureStartBtn" type="button">Start Session</button></div>
       </div>
     </div>
   </section>
 
-  <!-- POSE MATCH RESULT -->
+  <!-- POSE MATCH 6 -->
+  <section id="screen-pm-review" class="screen">
+    <div class="top">
+      <button class="btn ghost" id="pmReviewBackBtn" type="button">← Back</button>
+      <div><div class="step">Step 6 of 8</div><div class="title">Review Captures</div></div>
+      <div class="spacer"></div>
+    </div>
+    <div class="panel" style="max-width:1000px;margin:0 auto">
+      <div class="bar"><span>Review your captures</span></div>
+      <div class="side" style="padding:20px">
+        <div class="pm-review-grid" id="pmReviewGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px"></div>
+        <div class="foot">
+          <button class="btn ghost" id="pmReviewRetakeBtn" type="button">Retake Selected</button>
+          <button class="btn accent" id="pmReviewContinueBtn" type="button">Continue →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POSE MATCH 7 -->
   <section id="screen-pm-result" class="screen">
-    <div class="meta"><span>Pose Match strip</span><span id="pmResultDate"></span></div>
-    <h1 class="result-title">Your strip.</h1>
-    <p class="result-sub">Save it, or run it back for another take.</p>
+    <div class="top">
+      <button class="btn ghost" id="pmResultBackBtn" type="button">← Back</button>
+      <div><div class="step">Step 7 of 8</div><div class="title">Pose Match Result</div></div>
+      <div class="spacer"></div>
+    </div>
     <div class="two">
-      <div class="result-canvas"><canvas id="pmStripCanvas" class="strip" width="1200" height="1200"></canvas></div>
+      <div class="result-canvas"><canvas id="pmResultCanvas" class="strip" width="348" height="1062"></canvas></div>
       <div class="side">
         <div class="lbl">Actions</div>
         <div class="btnrow result-actions" style="flex-direction:column;align-items:stretch;gap:10px">
-          <button class="btn" id="pmDownloadBtn" type="button">⬇️ Download</button>
-          <div style="display:flex;gap:10px">
-            <button class="btn ghost" id="pmEmailBtn" type="button" style="flex:1">✉️ Email</button>
-            <button class="btn ghost" id="pmPrintBtn" type="button" style="flex:1">🖨️ Print</button>
-          </div>
-          <button class="btn ghost" id="pmRetakeBtn" type="button">↩️ Retake</button>
+          <button class="btn accent" id="pmResultFinalizeBtn" type="button">Finalize →</button>
+          <button class="btn ghost" id="pmResultRetakeBtn" type="button">↩️ Retake All</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POSE MATCH 8 -->
+  <section id="screen-pm-final" class="screen">
+    <div class="top">
+      <button class="btn ghost" id="pmFinalBackBtn" type="button">← Back</button>
+      <div><div class="step">Step 8 of 8</div><div class="title">Final Output</div></div>
+      <div class="spacer"></div>
+    </div>
+    <canvas id="pmFinalCanvas" width="348" height="1062" hidden></canvas>
+    <div class="two">
+      <div class="panel" style="min-height:200px">
+        <div class="bar"><span>Preview</span></div>
+        <div class="pad"><canvas id="pmFinalPreviewCanvas" class="strip" width="348" height="1062"></canvas></div>
+      </div>
+      <div class="panel side">
+        <div class="lbl">Customize</div>
+        <div><div class="lbl left">Title</div><input type="text" id="pmFinalTitle" class="verify-input" placeholder="My Pose Match" autocomplete="off"></div>
+        <div class="mirror" style="margin-top:12px">Date
+          <label class="sw"><input type="checkbox" id="pmFinalDateToggle" checked><span class="tr"></span><span class="th"></span></label>
+        </div>
+        <div class="mirror" style="margin-top:12px">Logo
+          <label class="sw"><input type="checkbox" id="pmFinalLogoToggle" checked><span class="tr"></span><span class="th"></span></label>
+        </div>
+        <div class="foot">
+          <button class="btn" id="pmFinalDownloadBtn" type="button">⬇️ Download</button>
+          <button class="btn ghost" id="pmFinalShareBtn" type="button">📤 Share</button>
+          <button class="btn ghost" id="pmFinalPrintBtn" type="button">🖨️ Print</button>
+          <button class="btn ghost" id="pmFinalResetBtn" type="button">🔄 Reset</button>
         </div>
       </div>
     </div>
@@ -406,8 +549,6 @@ footer{padding-top:clamp(28px,4vw,36px);font-size:clamp(10px,1.1vw,10.5px);color
   <footer>Regeneration S.E.E.D Isulan · keep this tab open for best camera performance</footer>
 </div>
 
-
-  <script src="script.js"></script>
-
+<script src="script.js"></script>
 </body>
 </html>
